@@ -16,10 +16,330 @@
 
 <body>
 
-  <main id="app">
-    <h1>Excedere Projects</h1>
-    <p>Plan. Build. Deliver. Together.</p>
-  </main>
+  <div class="app-shell">
+
+    <aside class="sidebar">
+
+      <div class="brand">
+        <div class="brand-mark">E</div>
+
+        <div>
+          <div class="brand-name">EXCEDERE</div>
+          <div class="brand-product">PROJECTS</div>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active">
+          <span>⌂</span>
+          <span>Today</span>
+        </button>
+
+        <button class="nav-item">
+          <span>◇</span>
+          <span>Projects</span>
+        </button>
+
+        <button class="nav-item">
+          <span>✓</span>
+          <span>Tasks</span>
+        </button>
+
+        <button class="nav-item">
+          <span>✦</span>
+          <span>Ideas</span>
+        </button>
+
+        <button class="nav-item">
+          <span>□</span>
+          <span>Calendar</span>
+        </button>
+
+        <button class="nav-item">
+          <span>✓</span>
+          <span>Completed</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button class="nav-item">
+          <span>⚙</span>
+          <span>Settings</span>
+        </button>
+      </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+      <header class="topbar">
+
+        <div>
+          <p class="eyebrow">EXCEDERE WORKSPACE</p>
+          <h1>Good evening, Wes.</h1>
+          <p class="subtitle">
+            Here's what needs your attention.
+          </p>
+        </div>
+
+        <button class="capture-button" id="captureButton">
+          + Quick Capture
+        </button>
+
+      </header>
+
+
+      <section class="stat-grid">
+
+        <article class="stat-card">
+          <span class="stat-label">TODAY</span>
+          <strong>6</strong>
+          <small>Tasks to focus on</small>
+        </article>
+
+        <article class="stat-card alert">
+          <span class="stat-label">OVERDUE</span>
+          <strong>2</strong>
+          <small>Needs attention</small>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-label">UPCOMING</span>
+          <strong>12</strong>
+          <small>Next 7 days</small>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-label">IDEAS</span>
+          <strong>8</strong>
+          <small>Waiting to be reviewed</small>
+        </article>
+
+      </section>
+
+
+      <section class="dashboard-grid">
+
+        <div class="panel priority-panel">
+
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">FOCUS</p>
+              <h2>Priority</h2>
+            </div>
+
+            <button class="text-button">View all</button>
+          </div>
+
+          <div class="task-list">
+
+            <div class="task-row">
+              <span class="priority-dot red"></span>
+
+              <div class="task-info">
+                <strong>Build Excedere Projects dashboard</strong>
+                <small>Excedere Projects</small>
+              </div>
+
+              <span class="task-status">In progress</span>
+            </div>
+
+            <div class="task-row">
+              <span class="priority-dot amber"></span>
+
+              <div class="task-info">
+                <strong>Design CRM contact architecture</strong>
+                <small>Excedere CRM</small>
+              </div>
+
+              <span class="task-status">Next</span>
+            </div>
+
+            <div class="task-row">
+              <span class="priority-dot green"></span>
+
+              <div class="task-info">
+                <strong>Continue Excedere Flow development</strong>
+                <small>Excedere Flow</small>
+              </div>
+
+              <span class="task-status">Planned</span>
+            </div>
+
+            <div class="task-row">
+              <span class="priority-dot green"></span>
+
+              <div class="task-info">
+                <strong>Website visibility and marketing updates</strong>
+                <small>Excedere Marketing</small>
+              </div>
+
+              <span class="task-status">Planned</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="panel ideas-panel">
+
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">CAPTURE</p>
+              <h2>Latest Ideas</h2>
+            </div>
+
+            <button class="text-button">View ideas</button>
+          </div>
+
+          <div class="idea-box">
+            <span>✦</span>
+
+            <div>
+              <strong>Nothing gets forgotten.</strong>
+              <p>
+                Capture an idea now and decide what to do with it later.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="projects-section">
+
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">WORKSPACE</p>
+            <h2>Active Projects</h2>
+          </div>
+
+          <button class="text-button">View all projects</button>
+        </div>
+
+
+        <div class="project-grid">
+
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-icon projects">EP</span>
+              <span class="health green-health">On track</span>
+            </div>
+
+            <h3>Excedere Projects</h3>
+            <p>Project management platform</p>
+
+            <div class="progress">
+              <span style="width: 18%"></span>
+            </div>
+
+            <div class="project-footer">
+              <span>18% complete</span>
+              <strong>Priority</strong>
+            </div>
+          </article>
+
+
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-icon crm">CRM</span>
+              <span class="health amber-health">Planning</span>
+            </div>
+
+            <h3>Excedere CRM</h3>
+            <p>Sales and relationship management</p>
+
+            <div class="progress">
+              <span style="width: 10%"></span>
+            </div>
+
+            <div class="project-footer">
+              <span>10% complete</span>
+              <strong>Active</strong>
+            </div>
+          </article>
+
+
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-icon flow">EF</span>
+              <span class="health green-health">Active</span>
+            </div>
+
+            <h3>Excedere Flow</h3>
+            <p>Content and workflow platform</p>
+
+            <div class="progress">
+              <span style="width: 25%"></span>
+            </div>
+
+            <div class="project-footer">
+              <span>25% complete</span>
+              <strong>Active</strong>
+            </div>
+          </article>
+
+
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-icon web">WEB</span>
+              <span class="health green-health">Live</span>
+            </div>
+
+            <h3>Excedere Website</h3>
+            <p>Main consultancy website</p>
+
+            <div class="progress">
+              <span style="width: 75%"></span>
+            </div>
+
+            <div class="project-footer">
+              <span>75% complete</span>
+              <strong>Ongoing</strong>
+            </div>
+          </article>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <div class="capture-modal" id="captureModal">
+
+    <div class="capture-card">
+
+      <button
+        class="modal-close"
+        id="closeCapture"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+      <p class="eyebrow">QUICK CAPTURE</p>
+      <h2>What's on your mind?</h2>
+
+      <textarea
+        id="captureText"
+        placeholder="Task, idea, reminder..."
+      ></textarea>
+
+      <button class="capture-save" id="saveCapture">
+        Save to Inbox
+      </button>
+
+    </div>
+
+  </div>
+
 
   <script src="app.js"></script>
 
