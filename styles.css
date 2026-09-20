@@ -1,0 +1,85 @@
+:root {
+  --bg: #050a0a;
+  --panel: #0b1211;
+  --panel-soft: #101a18;
+  --border: rgba(80, 255, 199, 0.14);
+
+  --green: #31f0b5;
+  --green-bright: #6affcf;
+  --green-dark: #087e64;
+
+  --text: #f4f7f6;
+  --muted: #8d9c98;
+
+  --radius: 18px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(20, 183, 139, 0.15),
+      transparent 38%
+    ),
+    var(--bg);
+}
+
+#app {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 24px;
+
+  text-align: center;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background: linear-gradient(
+    135deg,
+    #ffffff 20%,
+    var(--green-bright) 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+p {
+  margin-top: 16px;
+
+  color: var(--green);
+  font-size: 1rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
