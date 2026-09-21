@@ -40,7 +40,7 @@
           <span>Projects</span>
         </button>
 
-        <button class="nav-item">
+        <button class="nav-item" id="tasksNav">
           <span>✓</span>
           <span>Tasks</span>
         </button>
@@ -71,7 +71,7 @@
     </aside>
 
 
-    <main class="main-content">
+    <main class="main-content" id="dashboardView">
 
       <header class="topbar">
 
@@ -309,6 +309,32 @@
 
     </main>
 
+<main class="main-content tasks-view" id="tasksView" style="display: none;">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">EXCEDERE WORKSPACE</p>
+            <h1>Tasks</h1>
+            <p class="subtitle">Everything that needs your attention, in one place.</p>
+        </div>
+
+        <button class="capture-button" id="tasksCaptureButton">
+            + Quick Capture
+        </button>
+    </header>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">TASKS</p>
+                <h2>All Tasks</h2>
+            </div>
+        </div>
+
+        <div class="task-list" id="allTasksList">
+        </div>
+    </section>
+</main>
+    
   </div>
 
 
