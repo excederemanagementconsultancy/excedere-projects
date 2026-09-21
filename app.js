@@ -285,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // EXCEDERE PROJECTS — DISPLAY SAVED CAPTURES
 
 document.addEventListener("DOMContentLoaded", () => {
-
+console.log("SAVED CAPTURE SYSTEM STARTED");
   function getSavedCaptures() {
     try {
       return JSON.parse(
