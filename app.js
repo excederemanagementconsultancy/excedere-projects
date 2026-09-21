@@ -462,9 +462,10 @@ if (tasksNav && dashboardView && tasksView) {
 
 const todayNav = document.getElementById("todayNav");
 
-if (todayNav && dashboardView && tasksView) {
+if (todayNav && dashboardView && tasksView && projectsView) {
   todayNav.addEventListener("click", () => {
     tasksView.style.display = "none";
+    projectsView.style.display = "none";
     dashboardView.style.display = "block";
 
     document
@@ -472,5 +473,23 @@ if (todayNav && dashboardView && tasksView) {
       .forEach(item => item.classList.remove("active"));
 
     todayNav.classList.add("active");
+  });
+}
+// EXCEDERE PROJECTS - PROJECTS NAVIGATION
+
+const projectsNav = document.getElementById("projectsNav");
+const projectsView = document.getElementById("projectsView");
+
+if (projectsNav && projectsView && dashboardView && tasksView) {
+  projectsNav.addEventListener("click", () => {
+    dashboardView.style.display = "none";
+    tasksView.style.display = "none";
+    projectsView.style.display = "block";
+
+    document
+      .querySelectorAll(".nav-item")
+      .forEach(item => item.classList.remove("active"));
+
+    projectsNav.classList.add("active");
   });
 }
