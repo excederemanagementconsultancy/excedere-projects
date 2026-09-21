@@ -367,3 +367,94 @@ console.log("SAVED CAPTURE SYSTEM STARTED");
   displaySavedCaptures();
 
 });
+// EXCEDERE PROJECTS – TASKS PAGE
+
+const tasksNav = document.getElementById("tasksNav");
+const dashboardView = document.getElementById("dashboardView");
+const tasksView = document.getElementById("tasksView");
+const allTasksList = document.getElementById("allTasksList");
+
+function getTaskCaptures() {
+  try {
+    const captures = JSON.parse(
+      localStorage.getItem("excedereCaptures") || "[]"
+    );
+
+    return captures.filter(item => item.type === "Task");
+  } catch (error) {
+    console.error("Could not load tasks:", error);
+    return [];
+  }
+}
+
+function renderTasksPage() {
+  if (!allTasksList) return;
+
+  const tasks = getTaskCaptures();
+
+  allTasksList.innerHTML = "";
+
+  if (!tasks.length) {
+    allTasksList.innerHTML = `
+      <div class="task-row">
+        <div class="task-info">
+          <strong>No tasks yet</strong>
+          <small>Use Quick Capture to create your first task.</small>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  tasks
+    .slice()
+    .reverse()
+    .forEach(item => {
+      const row = document.createElement("div");
+      row.className = "task-row saved-capture";
+
+      let dotClass = "green";
+
+      if (item.priority === "Urgent") {
+        dotClass = "red";
+      } else if (item.priority === "High") {
+        dotClass = "amber";
+      }
+
+      const dueText = item.dueDate
+        ? `Due ${item.dueDate}`
+        : item.priority;
+
+      row.innerHTML = `
+        <span class="priority-dot ${dotClass}"></span>
+
+        <div class="task-info">
+          <strong></strong>
+          <small></small>
+        </div>
+
+        <span class="task-status"></span>
+      `;
+
+      row.querySelector("strong").textContent = item.title;
+      row.querySelector("small").textContent = item.project;
+      row.querySelector(".task-status").textContent = dueText;
+
+      allTasksList.appendChild(row);
+    });
+}
+
+if (tasksNav && dashboardView && tasksView) {
+  tasksNav.addEventListener("click", () => {
+    dashboardView.style.display = "none";
+    tasksView.style.display = "block";
+
+    document
+      .querySelectorAll(".nav-item")
+      .forEach(item => item.classList.remove("active"));
+
+    tasksNav.classList.add("active");
+
+    renderTasksPage();
+  });
+}
