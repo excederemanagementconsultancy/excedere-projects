@@ -488,3 +488,13 @@ if (projectsNav && dashboardView && tasksView && projectsView) {
     setActiveNav(projectsNav);
   });
 }
+
+// EXCEDERE PROJECTS - PROJECT CARD
+
+const excedereProjectsCard = document.getElementById("excedereProjectsCard");
+
+if (excedereProjectsCard) {
+  excedereProjectsCard.addEventListener("click", () => {
+    alert("Excedere Projects workspace is connected!");
+  });
+}
