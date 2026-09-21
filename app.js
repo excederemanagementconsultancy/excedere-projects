@@ -458,3 +458,19 @@ if (tasksNav && dashboardView && tasksView) {
     renderTasksPage();
   });
 }
+// EXCEDERE PROJECTS – TODAY NAVIGATION
+
+const todayNav = document.getElementById("todayNav");
+
+if (todayNav && dashboardView && tasksView) {
+  todayNav.addEventListener("click", () => {
+    tasksView.style.display = "none";
+    dashboardView.style.display = "block";
+
+    document
+      .querySelectorAll(".nav-item")
+      .forEach(item => item.classList.remove("active"));
+
+    todayNav.classList.add("active");
+  });
+}
