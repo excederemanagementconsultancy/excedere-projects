@@ -444,52 +444,47 @@ function renderTasksPage() {
     });
 }
 
-if (tasksNav && dashboardView && tasksView) {
-  tasksNav.addEventListener("click", () => {
-    dashboardView.style.display = "none";
-    tasksView.style.display = "block";
-
-    document
-      .querySelectorAll(".nav-item")
-      .forEach(item => item.classList.remove("active"));
-
-    tasksNav.classList.add("active");
-
-    renderTasksPage();
-  });
-}
-// EXCEDERE PROJECTS – TODAY NAVIGATION
+// EXCEDERE PROJECTS - MAIN NAVIGATION
 
 const todayNav = document.getElementById("todayNav");
-
-if (todayNav && dashboardView && tasksView && projectsView) {
-  todayNav.addEventListener("click", () => {
-    tasksView.style.display = "none";
-    projectsView.style.display = "none";
-    dashboardView.style.display = "block";
-
-    document
-      .querySelectorAll(".nav-item")
-      .forEach(item => item.classList.remove("active"));
-
-    todayNav.classList.add("active");
-  });
-}
-// EXCEDERE PROJECTS - PROJECTS NAVIGATION
-
 const projectsNav = document.getElementById("projectsNav");
 const projectsView = document.getElementById("projectsView");
 
-if (projectsNav && projectsView && dashboardView && tasksView) {
+function setActiveNav(activeNav) {
+  document
+    .querySelectorAll(".nav-item")
+    .forEach(item => item.classList.remove("active"));
+
+  activeNav.classList.add("active");
+}
+
+if (todayNav && dashboardView && tasksView && projectsView) {
+  todayNav.addEventListener("click", () => {
+    dashboardView.style.display = "block";
+    tasksView.style.display = "none";
+    projectsView.style.display = "none";
+
+    setActiveNav(todayNav);
+  });
+}
+
+if (tasksNav && dashboardView && tasksView && projectsView) {
+  tasksNav.addEventListener("click", () => {
+    dashboardView.style.display = "none";
+    tasksView.style.display = "block";
+    projectsView.style.display = "none";
+
+    setActiveNav(tasksNav);
+    renderTasksPage();
+  });
+}
+
+if (projectsNav && dashboardView && tasksView && projectsView) {
   projectsNav.addEventListener("click", () => {
     dashboardView.style.display = "none";
     tasksView.style.display = "none";
     projectsView.style.display = "block";
 
-    document
-      .querySelectorAll(".nav-item")
-      .forEach(item => item.classList.remove("active"));
-
-    projectsNav.classList.add("active");
+    setActiveNav(projectsNav);
   });
 }
