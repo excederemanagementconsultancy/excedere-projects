@@ -281,3 +281,89 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+// EXCEDERE PROJECTS — DISPLAY SAVED CAPTURES
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  function getSavedCaptures() {
+    try {
+      return JSON.parse(
+        localStorage.getItem("excedereCaptures") || "[]"
+      );
+    } catch (error) {
+      console.error("Could not load Excedere captures:", error);
+      return [];
+    }
+  }
+
+  function displaySavedCaptures() {
+
+    const captures = getSavedCaptures();
+
+    if (!captures.length) {
+      return;
+    }
+
+    const priorityPanel = document.querySelector(".priority-panel");
+
+    if (!priorityPanel) {
+      console.error("Priority panel not found.");
+      return;
+    }
+
+    const taskList = priorityPanel.querySelector(".task-list");
+
+    if (!taskList) {
+      console.error("Task list not found.");
+      return;
+    }
+
+    // Remove previously generated captures
+    taskList
+      .querySelectorAll(".saved-capture")
+      .forEach(item => item.remove());
+
+    captures
+      .filter(item => item.type === "Task")
+      .slice()
+      .reverse()
+      .forEach(item => {
+
+        const row = document.createElement("div");
+        row.className = "task-row saved-capture";
+
+        let dotClass = "green";
+
+        if (item.priority === "Urgent") {
+          dotClass = "red";
+        } else if (item.priority === "High") {
+          dotClass = "amber";
+        }
+
+        const dueText = item.dueDate
+          ? `Due ${item.dueDate}`
+          : item.priority;
+
+        row.innerHTML = `
+          <span class="priority-dot ${dotClass}"></span>
+
+          <div class="task-info">
+            <strong></strong>
+            <small></small>
+          </div>
+
+          <span class="task-status"></span>
+        `;
+
+        row.querySelector("strong").textContent = item.title;
+        row.querySelector("small").textContent = item.project;
+        row.querySelector(".task-status").textContent = dueText;
+
+        taskList.prepend(row);
+      });
+  }
+
+  displaySavedCaptures();
+
+});
