@@ -489,12 +489,16 @@ if (projectsNav && dashboardView && tasksView && projectsView) {
   });
 }
 
-// EXCEDERE PROJECTS - PROJECT CARD
+// EXCEDERE PROJECTS - OPEN PROJECT WORKSPACE
 
 const excedereProjectsCard = document.getElementById("excedereProjectsCard");
+const projectWorkspaceView = document.getElementById("projectWorkspaceView");
 
-if (excedereProjectsCard) {
+if (excedereProjectsCard && projectWorkspaceView) {
   excedereProjectsCard.addEventListener("click", () => {
-    alert("Excedere Projects workspace is connected!");
+    dashboardView.style.display = "none";
+    tasksView.style.display = "none";
+    projectsView.style.display = "none";
+    projectWorkspaceView.style.display = "block";
   });
 }
