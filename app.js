@@ -506,9 +506,19 @@ if (excedereProjectsCard && projectWorkspaceView) {
 // CURRENT FOCUS CARD
 
 const currentFocusCard = document.getElementById("currentFocusCard");
+const currentFocusView = document.getElementById("currentFocusView");
+const backToWorkspace = document.getElementById("backToWorkspace");
 
-if (currentFocusCard) {
+if (currentFocusCard && currentFocusView && projectWorkspaceView) {
   currentFocusCard.addEventListener("click", () => {
-    alert("Current Focus works!");
+    projectWorkspaceView.style.display = "none";
+    currentFocusView.style.display = "block";
+  });
+}
+
+if (backToWorkspace && currentFocusView && projectWorkspaceView) {
+  backToWorkspace.addEventListener("click", () => {
+    currentFocusView.style.display = "none";
+    projectWorkspaceView.style.display = "block";
   });
 }
