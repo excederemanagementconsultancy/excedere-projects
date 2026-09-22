@@ -181,7 +181,12 @@ body {
 
 /* Dashboard selectors follow index.html. Keep grid children shrinkable. */
 .sidebar-bottom { margin-top: auto; padding-top: 24px; }
-.main-content { min-width: 0; padding: 30px 34px 60px; }
+.main-content {
+  min-width: 0;
+  padding: 30px 34px 60px;
+  grid-column: 2;
+  grid-row: 1;
+}
 .topbar, .panel-heading, .section-heading, .project-top, .project-footer {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
