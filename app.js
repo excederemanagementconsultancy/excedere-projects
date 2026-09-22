@@ -502,3 +502,13 @@ if (excedereProjectsCard && projectWorkspaceView) {
     projectWorkspaceView.style.display = "block";
   });
 }
+
+// CURRENT FOCUS CARD
+
+const currentFocusCard = document.getElementById("currentFocusCard");
+
+if (currentFocusCard) {
+  currentFocusCard.addEventListener("click", () => {
+    alert("Current Focus works!");
+  });
+}
