@@ -449,6 +449,8 @@ function renderTasksPage() {
 const todayNav = document.getElementById("todayNav");
 const projectsNav = document.getElementById("projectsNav");
 const projectsView = document.getElementById("projectsView");
+const projectWorkspaceView = document.getElementById("projectWorkspaceView");
+const currentFocusView = document.getElementById("currentFocusView");
 
 function setActiveNav(activeNav) {
   document
@@ -492,7 +494,7 @@ if (projectsNav && dashboardView && tasksView && projectsView) {
 // EXCEDERE PROJECTS - OPEN PROJECT WORKSPACE
 
 const excedereProjectsCard = document.getElementById("excedereProjectsCard");
-const projectWorkspaceView = document.getElementById("projectWorkspaceView");
+
 
 if (excedereProjectsCard && projectWorkspaceView) {
   excedereProjectsCard.addEventListener("click", () => {
@@ -506,7 +508,7 @@ if (excedereProjectsCard && projectWorkspaceView) {
 // CURRENT FOCUS CARD
 
 const currentFocusCard = document.getElementById("currentFocusCard");
-const currentFocusView = document.getElementById("currentFocusView");
+
 const backToWorkspace = document.getElementById("backToWorkspace");
 
 if (currentFocusCard && currentFocusView && projectWorkspaceView) {
