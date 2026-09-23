@@ -505,6 +505,18 @@ if (excedereProjectsCard && projectWorkspaceView) {
   });
 }
 
+// BACK TO PROJECTS
+const backToProjects = document.getElementById("backToProjects");
+
+if (backToProjects && projectWorkspaceView && projectsView) {
+  backToProjects.addEventListener("click", () => {
+    projectWorkspaceView.style.display = "none";
+    currentFocusView.style.display = "none";
+    projectsView.style.display = "block";
+    setActiveNav(projectsNav);
+  });
+}
+
 // CURRENT FOCUS CARD
 
 const currentFocusCard = document.getElementById("currentFocusCard");
