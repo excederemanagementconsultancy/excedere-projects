@@ -453,8 +453,11 @@ const projectsView = document.getElementById("projectsView");
 const projectWorkspaceView = document.getElementById("projectWorkspaceView");
 const currentFocusView = document.getElementById("currentFocusView");
 const projectTasksView = document.getElementById("projectTasksView");
+const milestonesView = document.getElementById("milestonesView");
 const excedereProjectsCard = document.getElementById("excedereProjectsCard");
 const currentFocusCard = document.getElementById("currentFocusCard");
+const milestonesCard = document.getElementById("milestonesCard");
+const backFromMilestones = document.getElementById("backFromMilestones");
 const projectTasksCard = document.getElementById("projectTasksCard");
 const backToProjects = document.getElementById("backToProjects");
 const backToWorkspace = document.getElementById("backToWorkspace");
@@ -464,6 +467,7 @@ function hideMainViews() {
   dashboardView.style.display = "none";
   tasksView.style.display = "none";
   projectsView.style.display = "none";
+  milestonesView.style.display = "none";
   projectWorkspaceView.style.display = "none";
   currentFocusView.style.display = "none";
   projectTasksView.style.display = "none";
@@ -559,6 +563,22 @@ if (projectTasksCard) {
 
 if (backFromProjectTasks) {
   backFromProjectTasks.addEventListener("click", () => {
+    showView(projectWorkspaceView, projectsNav);
+  });
+}
+
+// MILESTONES
+
+if (milestonesCard) {
+  milestonesCard.addEventListener("click", () => {
+    showView(milestonesView, projectsNav);
+  });
+}
+
+// BACK FROM MILESTONES
+
+if (backFromMilestones) {
+  backFromMilestones.addEventListener("click", () => {
     showView(projectWorkspaceView, projectsNav);
   });
 }
