@@ -452,12 +452,13 @@ const projectsNav = document.getElementById("projectsNav");
 const projectsView = document.getElementById("projectsView");
 const projectWorkspaceView = document.getElementById("projectWorkspaceView");
 const currentFocusView = document.getElementById("currentFocusView");
-
+const projectTasksView = document.getElementById("projectTasksView");
 const excedereProjectsCard = document.getElementById("excedereProjectsCard");
 const currentFocusCard = document.getElementById("currentFocusCard");
-
+const projectTasksCard = document.getElementById("projectTasksCard");
 const backToProjects = document.getElementById("backToProjects");
 const backToWorkspace = document.getElementById("backToWorkspace");
+const backFromProjectTasks = document.getElementById("backFromProjectTasks");
 
 function hideMainViews() {
   dashboardView.style.display = "none";
@@ -465,6 +466,7 @@ function hideMainViews() {
   projectsView.style.display = "none";
   projectWorkspaceView.style.display = "none";
   currentFocusView.style.display = "none";
+  projectTasksView.style.display = "none";
 }
 
 function setActiveNav(activeNav) {
@@ -541,6 +543,22 @@ if (currentFocusCard) {
 
 if (backToWorkspace) {
   backToWorkspace.addEventListener("click", () => {
+    showView(projectWorkspaceView, projectsNav);
+  });
+}
+
+// PROJECT TASKS
+
+if (projectTasksCard) {
+  projectTasksCard.addEventListener("click", () => {
+    showView(projectTasksView, projectsNav);
+  });
+}
+
+// BACK FROM PROJECT TASKS
+
+if (backFromProjectTasks) {
+  backFromProjectTasks.addEventListener("click", () => {
     showView(projectWorkspaceView, projectsNav);
   });
 }
