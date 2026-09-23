@@ -448,91 +448,99 @@ function renderTasksPage() {
 
 const todayNav = document.getElementById("todayNav");
 const projectsNav = document.getElementById("projectsNav");
+
 const projectsView = document.getElementById("projectsView");
 const projectWorkspaceView = document.getElementById("projectWorkspaceView");
 const currentFocusView = document.getElementById("currentFocusView");
+
+const excedereProjectsCard = document.getElementById("excedereProjectsCard");
+const currentFocusCard = document.getElementById("currentFocusCard");
+
+const backToProjects = document.getElementById("backToProjects");
+const backToWorkspace = document.getElementById("backToWorkspace");
+
+function hideMainViews() {
+  dashboardView.style.display = "none";
+  tasksView.style.display = "none";
+  projectsView.style.display = "none";
+  projectWorkspaceView.style.display = "none";
+  currentFocusView.style.display = "none";
+}
 
 function setActiveNav(activeNav) {
   document
     .querySelectorAll(".nav-item")
     .forEach(item => item.classList.remove("active"));
 
-  activeNav.classList.add("active");
+  if (activeNav) {
+    activeNav.classList.add("active");
+  }
 }
 
-if (todayNav && dashboardView && tasksView && projectsView) {
-  todayNav.addEventListener("click", () => {
-    dashboardView.style.display = "block";
-    tasksView.style.display = "none";
-    projectsView.style.display = "none";
+function showView(view, activeNav = null) {
+  hideMainViews();
+  view.style.display = "block";
 
-    setActiveNav(todayNav);
+  if (activeNav) {
+    setActiveNav(activeNav);
+  }
+
+  window.scrollTo(0, 0);
+}
+
+// TODAY
+
+if (todayNav) {
+  todayNav.addEventListener("click", () => {
+    showView(dashboardView, todayNav);
   });
 }
 
-if (tasksNav && dashboardView && tasksView && projectsView) {
-  tasksNav.addEventListener("click", () => {
-    dashboardView.style.display = "none";
-    tasksView.style.display = "block";
-    projectsView.style.display = "none";
+// TASKS
 
-    setActiveNav(tasksNav);
+if (tasksNav) {
+  tasksNav.addEventListener("click", () => {
+    showView(tasksView, tasksNav);
     renderTasksPage();
   });
 }
 
-if (projectsNav && dashboardView && tasksView && projectsView) {
+// PROJECTS
+
+if (projectsNav) {
   projectsNav.addEventListener("click", () => {
-    dashboardView.style.display = "none";
-    tasksView.style.display = "none";
-    projectsView.style.display = "block";
-
-    setActiveNav(projectsNav);
+    showView(projectsView, projectsNav);
   });
 }
 
-// EXCEDERE PROJECTS - OPEN PROJECT WORKSPACE
+// OPEN EXCEDERE PROJECTS
 
-const excedereProjectsCard = document.getElementById("excedereProjectsCard");
-
-
-if (excedereProjectsCard && projectWorkspaceView) {
+if (excedereProjectsCard) {
   excedereProjectsCard.addEventListener("click", () => {
-    dashboardView.style.display = "none";
-    tasksView.style.display = "none";
-    projectsView.style.display = "none";
-    projectWorkspaceView.style.display = "block";
+    showView(projectWorkspaceView, projectsNav);
   });
 }
 
-// BACK TO PROJECTS
-const backToProjects = document.getElementById("backToProjects");
+// BACK TO ALL PROJECTS
 
-if (backToProjects && projectWorkspaceView && projectsView) {
+if (backToProjects) {
   backToProjects.addEventListener("click", () => {
-    projectWorkspaceView.style.display = "none";
-    currentFocusView.style.display = "none";
-    projectsView.style.display = "block";
-    setActiveNav(projectsNav);
+    showView(projectsView, projectsNav);
   });
 }
 
-// CURRENT FOCUS CARD
+// CURRENT FOCUS
 
-const currentFocusCard = document.getElementById("currentFocusCard");
-
-const backToWorkspace = document.getElementById("backToWorkspace");
-
-if (currentFocusCard && currentFocusView && projectWorkspaceView) {
+if (currentFocusCard) {
   currentFocusCard.addEventListener("click", () => {
-    projectWorkspaceView.style.display = "none";
-    currentFocusView.style.display = "block";
+    showView(currentFocusView, projectsNav);
   });
 }
 
-if (backToWorkspace && currentFocusView && projectWorkspaceView) {
+// BACK TO EXCEDERE PROJECTS
+
+if (backToWorkspace) {
   backToWorkspace.addEventListener("click", () => {
-    currentFocusView.style.display = "none";
-    projectWorkspaceView.style.display = "block";
+    showView(projectWorkspaceView, projectsNav);
   });
 }
