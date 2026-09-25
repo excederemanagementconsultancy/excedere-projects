@@ -458,6 +458,9 @@ const excedereProjectsCard = document.getElementById("excedereProjectsCard");
 const currentFocusCard = document.getElementById("currentFocusCard");
 const milestonesCard = document.getElementById("milestonesCard");
 const backFromMilestones = document.getElementById("backFromMilestones");
+const projectNotesView = document.getElementById("projectNotesView");
+const projectNotesCard = document.getElementById("projectNotesCard");
+const backFromProjectNotes = document.getElementById("backFromProjectNotes");
 const projectTasksCard = document.getElementById("projectTasksCard");
 const backToProjects = document.getElementById("backToProjects");
 const backToWorkspace = document.getElementById("backToWorkspace");
@@ -471,6 +474,7 @@ function hideMainViews() {
   projectWorkspaceView.style.display = "none";
   currentFocusView.style.display = "none";
   projectTasksView.style.display = "none";
+  projectNotesView.style.display = "none";
 }
 
 function setActiveNav(activeNav) {
@@ -579,6 +583,22 @@ if (milestonesCard) {
 
 if (backFromMilestones) {
   backFromMilestones.addEventListener("click", () => {
+    showView(projectWorkspaceView, projectsNav);
+  });
+}
+
+// PROJECT NOTES
+
+if (projectNotesCard) {
+  projectNotesCard.addEventListener("click", () => {
+    showView(projectNotesView, projectsNav);
+  });
+}
+
+// BACK FROM PROJECT NOTES
+
+if (backFromProjectNotes) {
+  backFromProjectNotes.addEventListener("click", () => {
     showView(projectWorkspaceView, projectsNav);
   });
 }
