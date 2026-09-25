@@ -465,6 +465,8 @@ const projectTasksCard = document.getElementById("projectTasksCard");
 const backToProjects = document.getElementById("backToProjects");
 const backToWorkspace = document.getElementById("backToWorkspace");
 const backFromProjectTasks = document.getElementById("backFromProjectTasks");
+const currentFocusText = document.getElementById("currentFocusText");
+const editCurrentFocus = document.getElementById("editCurrentFocus");
 
 function hideMainViews() {
   dashboardView.style.display = "none";
