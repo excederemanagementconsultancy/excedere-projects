@@ -604,3 +604,18 @@ if (backFromProjectNotes) {
     showView(projectWorkspaceView, projectsNav);
   });
 }
+
+// EDIT CURRENT FOCUS
+
+if (editCurrentFocus && currentFocusText) {
+  editCurrentFocus.addEventListener("click", () => {
+    const updatedFocus = prompt(
+      "What are you working on now?",
+      currentFocusText.textContent
+    );
+
+    if (updatedFocus && updatedFocus.trim()) {
+      currentFocusText.textContent = updatedFocus.trim();
+    }
+  });
+}
