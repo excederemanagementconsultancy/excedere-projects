@@ -608,6 +608,12 @@ if (backFromProjectNotes) {
 // EDIT CURRENT FOCUS
 
 if (editCurrentFocus && currentFocusText) {
+  const savedCurrentFocus = localStorage.getItem("excedereCurrentFocus");
+
+  if (savedCurrentFocus) {
+    currentFocusText.textContent = savedCurrentFocus;
+  }
+
   editCurrentFocus.addEventListener("click", () => {
     const updatedFocus = prompt(
       "What are you working on now?",
@@ -615,7 +621,10 @@ if (editCurrentFocus && currentFocusText) {
     );
 
     if (updatedFocus && updatedFocus.trim()) {
-      currentFocusText.textContent = updatedFocus.trim();
+      const cleanFocus = updatedFocus.trim();
+
+      currentFocusText.textContent = cleanFocus;
+      localStorage.setItem("excedereCurrentFocus", cleanFocus);
     }
   });
 }
