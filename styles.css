@@ -285,3 +285,24 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--green-br
   .task-status { grid-column: 2; }
   .panel-heading, .section-heading { flex-wrap: wrap; }
 }
+
+.focus-edit-button {
+  width: auto;
+  align-self: flex-start;
+  margin-top: 14px;
+  padding: 7px 16px;
+  border: 1px solid rgba(54, 211, 153, 0.35);
+  border-radius: 8px;
+  background: rgba(54, 211, 153, 0.08);
+  color: #36d399;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.focus-edit-button:hover {
+  background: rgba(54, 211, 153, 0.16);
+  border-color: #36d399;
+}
