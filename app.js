@@ -475,6 +475,7 @@ const overallProgressBar = document.getElementById("overallProgressBar");
 const overallProgressText = document.getElementById("overallProgressText");
 const editOverallProgress = document.getElementById("editOverallProgress");
 const addProjectTask = document.getElementById("addProjectTask");
+const projectTasksGrid = document.getElementById("projectTasksGrid");
 
 function hideMainViews() {
   dashboardView.style.display = "none";
@@ -731,12 +732,27 @@ if (editOverallProgress && overallProgressBar && overallProgressText) {
 
 // ADD PROJECT TASK
 
-if (addProjectTask) {
+if (addProjectTask && projectTasksGrid) {
   addProjectTask.addEventListener("click", () => {
     const taskName = prompt("What task would you like to add?");
 
     if (taskName && taskName.trim()) {
-      alert(`Task captured: ${taskName.trim()}`);
+      const cleanTaskName = taskName.trim();
+
+      const taskCard = document.createElement("article");
+      taskCard.className = "project-card";
+
+      taskCard.innerHTML = `
+        <div class="project-icon">TASK</div>
+        <h3>${cleanTaskName}</h3>
+        <p>New project task.</p>
+        <div class="project-footer">
+          <span>Project Task</span>
+          <strong>Active</strong>
+        </div>
+      `;
+
+      projectTasksGrid.appendChild(taskCard);
     }
   });
 }
