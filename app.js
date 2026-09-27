@@ -467,6 +467,8 @@ const backToWorkspace = document.getElementById("backToWorkspace");
 const backFromProjectTasks = document.getElementById("backFromProjectTasks");
 const currentFocusText = document.getElementById("currentFocusText");
 const editCurrentFocus = document.getElementById("editCurrentFocus");
+const currentStageText = document.getElementById("currentStageText");
+const editCurrentStage = document.getElementById("editCurrentStage");
 
 function hideMainViews() {
   dashboardView.style.display = "none";
@@ -625,6 +627,30 @@ if (editCurrentFocus && currentFocusText) {
 
       currentFocusText.textContent = cleanFocus;
       localStorage.setItem("excedereCurrentFocus", cleanFocus);
+    }
+  });
+}
+
+// EDIT CURRENT STAGE
+
+if (editCurrentStage && currentStageText) {
+  const savedCurrentStage = localStorage.getItem("excedereCurrentStage");
+
+  if (savedCurrentStage) {
+    currentStageText.textContent = savedCurrentStage;
+  }
+
+  editCurrentStage.addEventListener("click", () => {
+    const updatedStage = prompt(
+      "What stage is the project currently at?",
+      currentStageText.textContent
+    );
+
+    if (updatedStage && updatedStage.trim()) {
+      const cleanStage = updatedStage.trim();
+
+      currentStageText.textContent = cleanStage;
+      localStorage.setItem("excedereCurrentStage", cleanStage);
     }
   });
 }
