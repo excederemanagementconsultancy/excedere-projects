@@ -471,6 +471,9 @@ const currentStageText = document.getElementById("currentStageText");
 const editCurrentStage = document.getElementById("editCurrentStage");
 const nextActionText = document.getElementById("nextActionText");
 const editNextAction = document.getElementById("editNextAction");
+const overallProgressBar = document.getElementById("overallProgressBar");
+const overallProgressText = document.getElementById("overallProgressText");
+const editOverallProgress = document.getElementById("editOverallProgress");
 
 function hideMainViews() {
   dashboardView.style.display = "none";
@@ -677,6 +680,50 @@ if (editNextAction && nextActionText) {
 
       nextActionText.textContent = cleanAction;
       localStorage.setItem("excedereNextAction", cleanAction);
+    }
+  });
+}
+
+// EDIT OVERALL PROGRESS
+
+if (editOverallProgress && overallProgressBar && overallProgressText) {
+  const savedProgress = localStorage.getItem("excedereOverallProgress");
+
+  if (savedProgress !== null) {
+    overallProgressBar.style.width = `${savedProgress}%`;
+    overallProgressText.textContent = `${savedProgress}% complete`;
+  }
+
+  editOverallProgress.addEventListener("click", () => {
+    const currentProgress = parseInt(overallProgressText.textContent) || 0;
+
+    const updatedProgress = prompt(
+      "Enter project progress from 0 to 100:",
+      currentProgress
+    );
+
+    if (updatedProgress === null) {
+      return;
+    }
+
+    const progressNumber = Number(updatedProgress);
+
+    if (
+      Number.isFinite(progressNumber) &&
+      progressNumber >= 0 &&
+      progressNumber <= 100
+    ) {
+      const cleanProgress = Math.round(progressNumber);
+
+      overallProgressBar.style.width = `${cleanProgress}%`;
+      overallProgressText.textContent = `${cleanProgress}% complete`;
+
+      localStorage.setItem(
+        "excedereOverallProgress",
+        cleanProgress.toString()
+      );
+    } else {
+      alert("Please enter a number between 0 and 100.");
     }
   });
 }
