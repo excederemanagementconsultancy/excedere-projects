@@ -469,6 +469,8 @@ const currentFocusText = document.getElementById("currentFocusText");
 const editCurrentFocus = document.getElementById("editCurrentFocus");
 const currentStageText = document.getElementById("currentStageText");
 const editCurrentStage = document.getElementById("editCurrentStage");
+const nextActionText = document.getElementById("nextActionText");
+const editNextAction = document.getElementById("editNextAction");
 
 function hideMainViews() {
   dashboardView.style.display = "none";
@@ -651,6 +653,30 @@ if (editCurrentStage && currentStageText) {
 
       currentStageText.textContent = cleanStage;
       localStorage.setItem("excedereCurrentStage", cleanStage);
+    }
+  });
+}
+
+// EDIT NEXT ACTION
+
+if (editNextAction && nextActionText) {
+  const savedNextAction = localStorage.getItem("excedereNextAction");
+
+  if (savedNextAction) {
+    nextActionText.textContent = savedNextAction;
+  }
+
+  editNextAction.addEventListener("click", () => {
+    const updatedAction = prompt(
+      "What is the next action?",
+      nextActionText.textContent
+    );
+
+    if (updatedAction && updatedAction.trim()) {
+      const cleanAction = updatedAction.trim();
+
+      nextActionText.textContent = cleanAction;
+      localStorage.setItem("excedereNextAction", cleanAction);
     }
   });
 }
