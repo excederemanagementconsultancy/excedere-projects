@@ -733,26 +733,44 @@ if (editOverallProgress && overallProgressBar && overallProgressText) {
 // ADD PROJECT TASK
 
 if (addProjectTask && projectTasksGrid) {
+  let savedProjectTasks =
+    JSON.parse(localStorage.getItem("excedereProjectTasks")) || [];
+
+  function createProjectTaskCard(taskName) {
+    const taskCard = document.createElement("article");
+    taskCard.className = "project-card";
+
+    taskCard.innerHTML = `
+      <div class="project-icon">TASK</div>
+      <h3>${taskName}</h3>
+      <p>New project task.</p>
+      <div class="project-footer">
+        <span>Project Task</span>
+        <strong>Active</strong>
+      </div>
+    `;
+
+    projectTasksGrid.appendChild(taskCard);
+  }
+
+  savedProjectTasks.forEach((taskName) => {
+    createProjectTaskCard(taskName);
+  });
+
   addProjectTask.addEventListener("click", () => {
     const taskName = prompt("What task would you like to add?");
 
     if (taskName && taskName.trim()) {
       const cleanTaskName = taskName.trim();
 
-      const taskCard = document.createElement("article");
-      taskCard.className = "project-card";
+      savedProjectTasks.push(cleanTaskName);
 
-      taskCard.innerHTML = `
-        <div class="project-icon">TASK</div>
-        <h3>${cleanTaskName}</h3>
-        <p>New project task.</p>
-        <div class="project-footer">
-          <span>Project Task</span>
-          <strong>Active</strong>
-        </div>
-      `;
+      localStorage.setItem(
+        "excedereProjectTasks",
+        JSON.stringify(savedProjectTasks)
+      );
 
-      projectTasksGrid.appendChild(taskCard);
+      createProjectTaskCard(cleanTaskName);
     }
   });
 }
