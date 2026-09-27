@@ -474,6 +474,7 @@ const editNextAction = document.getElementById("editNextAction");
 const overallProgressBar = document.getElementById("overallProgressBar");
 const overallProgressText = document.getElementById("overallProgressText");
 const editOverallProgress = document.getElementById("editOverallProgress");
+const addProjectTask = document.getElementById("addProjectTask");
 
 function hideMainViews() {
   dashboardView.style.display = "none";
@@ -724,6 +725,18 @@ if (editOverallProgress && overallProgressBar && overallProgressText) {
       );
     } else {
       alert("Please enter a number between 0 and 100.");
+    }
+  });
+}
+
+// ADD PROJECT TASK
+
+if (addProjectTask) {
+  addProjectTask.addEventListener("click", () => {
+    const taskName = prompt("What task would you like to add?");
+
+    if (taskName && taskName.trim()) {
+      alert(`Task captured: ${taskName.trim()}`);
     }
   });
 }
