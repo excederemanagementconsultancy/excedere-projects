@@ -751,6 +751,29 @@ if (addProjectTask && projectTasksGrid) {
   </div>
 `;
 
+    
+    const editButton = taskCard.querySelector(".task-edit-button");
+
+editButton.addEventListener("click", () => {
+  const updatedTaskName = prompt("Edit task name:", taskName);
+
+  if (updatedTaskName && updatedTaskName.trim()) {
+    const cleanUpdatedName = updatedTaskName.trim();
+    const taskIndex = savedProjectTasks.indexOf(taskName);
+
+    if (taskIndex !== -1) {
+      savedProjectTasks[taskIndex] = cleanUpdatedName;
+
+      localStorage.setItem(
+        "excedereProjectTasks",
+        JSON.stringify(savedProjectTasks)
+      );
+
+      taskName = cleanUpdatedName;
+      taskCard.querySelector("h3").textContent = cleanUpdatedName;
+    }
+  }
+});
     projectTasksGrid.appendChild(taskCard);
   }
 
