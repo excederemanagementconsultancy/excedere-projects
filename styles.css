@@ -306,3 +306,28 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--green-br
   background: rgba(54, 211, 153, 0.16);
   border-color: #36d399;
 }
+
+/* Functional MVP additions reuse the existing palette and card layout. */
+[role="button"] { cursor: pointer; }
+[role="button"]:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--green-bright); outline-offset: 4px; }
+.record-card { overflow-wrap: anywhere; gap: 6px; }
+.record-card p { margin: 3px 0 8px; }
+.record-notes { white-space: pre-wrap; }
+.item-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.item-actions .focus-edit-button { margin-top: 0; }
+.record-list, #allTasksList, #ideasView .panel, #completedView .panel, #calendarView .panel { display: grid; gap: 12px; }
+.idea-box { flex-direction: column; }
+.empty-state { color: var(--muted); padding: 14px 0; line-height: 1.6; }
+.settings-heading { margin: 28px 0 16px; }
+.editor-dialog { margin: auto; width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 24px; color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); }
+.editor-dialog::backdrop { background: rgba(0,0,0,.72); }
+.editor-dialog label { display: block; margin-top: 16px; color: var(--muted); font-size: .85rem; }
+input, select, .editor-dialog textarea { font: inherit; color-scheme: dark; width: 100%; min-width: 0; padding: 11px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; }
+.editor-dialog label > * { display: block; margin-top: 7px; }
+.editor-dialog textarea { min-height: 120px; resize: vertical; }
+#calendarView input { width: auto; max-width: 100%; }
+.save-notice:not(:empty) { position: fixed; bottom: 14px; right: 14px; max-width: min(450px, calc(100% - 28px)); z-index: 20; padding: 10px 16px; background: var(--panel); border: 1px solid var(--green-dark); border-radius: 10px; font-size: .8rem; }
+.save-notice.error { border-color: var(--red); }
+@media (max-width: 800px) { .main-content { grid-column: 1; grid-row: auto; } }
+@media (max-width: 560px) { .editor-dialog { padding: 18px; } .capture-button { max-width: 100%; } }
+#tasksView .panel-heading select { width: auto; max-width: 100%; }
