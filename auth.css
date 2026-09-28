@@ -41,6 +41,7 @@
 
 
 /* Excedere Projects sign-in branding */
+
 .signin-intro {
   text-align: center;
 }
@@ -50,15 +51,15 @@
   flex-direction: column;
   align-items: center;
   gap: 0;
-  margin-bottom: 26px;
+  margin-bottom: 18px;
 }
 
 .signin-brand img {
-  width: 220px;
-  height: 220px;
+  width: 245px;
+  height: 245px;
   object-fit: contain;
   border-radius: 0;
-  margin-bottom: 4px;
+  margin-bottom: 0;
 }
 
 .signin-brand-title {
@@ -83,7 +84,8 @@
 .signin-tagline {
   text-align: center;
   letter-spacing: 0.18em;
-  margin: 0 0 38px;
+  margin: 0 0 34px;
+  font-size: 0.82rem;
 }
 
 .signin-tagline span {
@@ -94,16 +96,32 @@
 .signin-intro h1 {
   text-align: center;
   margin: 0;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.045em;
 }
 
 .signin-description {
   text-align: center;
   color: var(--muted);
-  line-height: 1.8;
-  margin: 26px 0 0;
+  line-height: 1.65;
+  margin: 28px 0 0;
+  font-size: 1.05rem;
 }
 
 .signin-device {
   text-align: center;
-  margin-top: 48px;
+  margin-top: 42px;
+}
+
+@media (max-width: 900px) {
+  .signin-brand img {
+    width: 190px;
+    height: 190px;
+  }
+
+  .signin-intro h1 {
+    font-size: 2.2rem;
+  }
 }
