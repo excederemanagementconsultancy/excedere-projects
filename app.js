@@ -741,14 +741,15 @@ if (addProjectTask && projectTasksGrid) {
     taskCard.className = "project-card";
 
     taskCard.innerHTML = `
-      <div class="project-icon">TASK</div>
-      <h3>${taskName}</h3>
-      <p>New project task.</p>
-      <div class="project-footer">
-        <span>Project Task</span>
-        <strong>Active</strong>
-      </div>
-    `;
+  <div class="project-icon">TASK</div>
+  <h3>${taskName}</h3>
+  <p>New project task.</p>
+  <button class="focus-edit-button task-edit-button">Edit</button>
+  <div class="project-footer">
+    <span>Project Task</span>
+    <strong>Active</strong>
+  </div>
+`;
 
     projectTasksGrid.appendChild(taskCard);
   }
