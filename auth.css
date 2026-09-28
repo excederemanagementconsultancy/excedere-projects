@@ -38,3 +38,72 @@
   .signin-card { padding: 24px 20px; }
   .signin-intro h1 { font-size: 2rem; }
 }
+
+
+/* Excedere Projects sign-in branding */
+.signin-intro {
+  text-align: center;
+}
+
+.signin-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 26px;
+}
+
+.signin-brand img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 0;
+  margin-bottom: 4px;
+}
+
+.signin-brand-title {
+  color: var(--text);
+  font-size: 2.25rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  line-height: 1.05;
+  margin-left: 0.22em;
+}
+
+.signin-brand-product {
+  color: var(--green-bright);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.55em;
+  line-height: 1.2;
+  margin-top: 8px;
+  margin-left: 0.55em;
+}
+
+.signin-tagline {
+  text-align: center;
+  letter-spacing: 0.18em;
+  margin: 0 0 38px;
+}
+
+.signin-tagline span {
+  color: var(--green-bright);
+  padding: 0 10px;
+}
+
+.signin-intro h1 {
+  text-align: center;
+  margin: 0;
+}
+
+.signin-description {
+  text-align: center;
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 26px 0 0;
+}
+
+.signin-device {
+  text-align: center;
+  margin-top: 48px;
+}
