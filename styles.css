@@ -331,3 +331,18 @@ input, select, .editor-dialog textarea { font: inherit; color-scheme: dark; widt
 @media (max-width: 800px) { .main-content { grid-column: 1; grid-row: auto; } }
 @media (max-width: 560px) { .editor-dialog { padding: 18px; } .capture-button { max-width: 100%; } }
 #tasksView .panel-heading select { width: auto; max-width: 100%; }
+
+/* Excedere Projects brand logo */
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
