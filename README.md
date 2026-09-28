@@ -33,3 +33,22 @@ Browser validation covered create/edit/complete/reopen/restore, cancellation of 
 ## Deployment
 
 Publish the root of the repository through GitHub Pages. Keep `index.html`, `styles.css`, `app.js`, `storage.js` and `features.js` together. No user data is included in the repository.
+
+## Temporary branded sign-in
+
+The sign-in screen uses the existing Projects logo and palette. Enter any valid email with the public demo password `projects-demo`. This is only a temporary interface gate, not secure authentication, account creation, encryption, or access control. All emails open the same local workspace. Never enter a real password.
+
+`auth-provider.js` exposes asynchronous `getSession`, `signIn`, `signOut`, and `requestPasswordReset` methods. `auth.js` handles presentation separately, and `auth.css` scopes the sign-in styles. A future backend must replace the adapter with server-verified sessions, enforce authorization on every data request, and introduce per-user storage before enabling multiple accounts. Existing browser data must be explicitly assigned or imported with the owner's consent at that time.
+
+Remember me uses localStorage; otherwise the demo session uses sessionStorage. Only a versioned demo marker is saved under `ExcedereProjectsDemoSessionV1`. Neither email nor password is stored or transmitted. Sign-out removes only this marker from both stores. Password help explains the demo password without claiming to send email. Existing project keys, migrations, backup format, feature code and sidebar logo styling are unchanged. The uppercase session namespace is excluded from existing project exports.
+
+Publish `auth.css`, `auth.js`, and `auth-provider.js` alongside the existing files. Run `node --test tests/*.test.cjs` for all 12 storage and authentication checks.
+
+### Sign-in regression verification (2026-09-28)
+
+- Passed all 12 automated storage/session tests, including byte-for-byte data preservation on sign-out, malformed sessions, storage errors, Remember me, session-only lifetime, and absence of saved passwords/email.
+- Browser-tested password help, invalid password, sign-in, Remember me reload, sign-out/reload, and saved task persistence after signing in again.
+- Browser-tested Today counts, all seven navigation views, Projects workspace/back navigation, Quick Capture task creation, dated Calendar task, Complete/Reopen, deletion cancellation, Recently deleted/Restore, Ideas creation, milestones, project notes, project task creation and progress editing.
+- No horizontal overflow in seven main views at 320, 390, 800, 1024 and 1440 pixels; four workspace views at 320, 800 and 1440; sign-in at all five widths. No browser console warnings/errors in the checked local session.
+- Export backup was invoked in local previews. The in-app browser did not expose a download event; downloaded-file verification remains environment-limited. Export implementation is unchanged and tests confirm the new auth marker is excluded by its existing prefix filter.
+- All test records were created on localhost, separate from production browser storage.
