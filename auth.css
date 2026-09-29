@@ -13,7 +13,7 @@
 .signin-card { min-width: 0; padding: 48px; border-radius: 24px; border: 1px solid var(--border); background: linear-gradient(145deg, #101f1b, #0b1514); box-shadow: 0 28px 80px #0005; }
 .signin-card h2 { font-size: 2.2rem; letter-spacing: -.035em; }
 .signin-subtitle { color: var(--muted); font-size: 1.05rem; line-height: 1.6; margin-top: 8px; }
-.signin-demo { padding: 14px; margin: 24px 0; border: 1px solid var(--border); border-radius: 10px; background: #31f0b507; font-size: .76rem; line-height: 1.6; color: #b0c3bd; }
+.signin-demo { padding: 18px; margin: 24px 0; border: 1px solid var(--border); border-radius: 10px; background: #31f0b507; font-size: .76rem; line-height: 1.6; color: #b0c3bd; }
 .signin-demo strong { color: var(--green-bright); }
 .signin-demo p { margin-top: 5px; }
 .signin-demo code { color: var(--text); white-space: nowrap; }
