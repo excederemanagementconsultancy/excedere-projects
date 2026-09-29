@@ -1,7 +1,7 @@
 /* Scoped sign-in styles preserve the existing dashboard and sidebar logo. */
 #authenticatedApp[hidden], .signin-screen[hidden] { display: none; }
 .signin-screen { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 20px 28px; }
-.signin-layout { width: min(100%, 1360px); display: grid; grid-template-columns: 1fr 520px; align-items: center; gap: 70px; }
+.signin-layout { width: min(100%, 1360px); display: grid; grid-template-columns: 1fr 580px; align-items: center; gap: 70px; }
 .signin-intro { min-width: 0; }
 .signin-brand { display: flex; align-items: center; gap: 16px; margin-bottom: 64px; }
 .signin-brand img { object-fit: contain; border-radius: 16px; }
