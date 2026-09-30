@@ -1,33 +1,75 @@
-/* Temporary demo adapter. This is a UI gate, not an authorization boundary.
-   Replace this adapter with server-verified sessions and per-user storage together.
-   Never store passwords or reuse this demo session as a backend credential. */
 window.ExcedereAuth = (() => {
   'use strict';
-  // Separate namespace deliberately excluded from the existing project backup export.
-  const key = 'ExcedereProjectsDemoSessionV1';
-  const valid = value => value && value.version === 1 && value.mode === 'demo';
+
+  const SUPABASE_URL = 'https://kxxyohagfmexvnzpuwys.supabase.co';
+
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_2gcvru1GxULE5nCVFNPgQw__vOGbDxx';
+
+  if (!window.supabase) {
+    throw new Error('Supabase library failed to load.');
+  }
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
   async function getSession() {
-    for (const storage of [sessionStorage, localStorage]) {
-      try { const value = JSON.parse(storage.getItem(key)); if (valid(value)) return value; } catch (_) { /* Invalid session means signed out. */ }
+    const { data, error } = await client.auth.getSession();
+
+    if (error) {
+      throw error;
     }
-    return null;
+
+    return data.session;
   }
-  async function signIn({email, password, remember}) {
-    if (!email.trim() || password !== 'projects-demo') throw Error('Use any valid email and the demo password projects-demo. Do not use a real password.');
-    const session = {version: 1, mode: 'demo'};
-    try {
-      localStorage.removeItem(key);
-      sessionStorage.removeItem(key);
-      (remember ? localStorage : sessionStorage).setItem(key, JSON.stringify(session));
-    } catch (_) { throw Error('This browser could not save the demo session. Allow browser storage and try again. Your project data has not been changed.'); }
-    return session;
+
+  async function signIn({ email, password }) {
+    const { data, error } = await client.auth.signInWithPassword({
+      email: email.trim(),
+      password
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    return data.session;
   }
+
   async function signOut() {
-    localStorage.removeItem(key);
-    sessionStorage.removeItem(key);
+    const { error } = await client.auth.signOut();
+
+    if (error) {
+      throw error;
+    }
   }
+
   async function requestPasswordReset() {
-    return 'No account or reset email is needed in this demo. Use projects-demo as the password. Secure account recovery will come with backend accounts.';
+    const emailField = document.getElementById('signinEmail');
+    const email = emailField ? emailField.value.trim() : '';
+
+    if (!email) {
+      throw new Error('Enter your email address first.');
+    }
+
+    const { error } = await client.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.href
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    return 'Password reset email sent. Check your inbox.';
   }
-  return {key, getSession, signIn, signOut, requestPasswordReset};
+
+  return {
+    key: 'excedereSupabaseSession',
+    client,
+    getSession,
+    signIn,
+    signOut,
+    requestPasswordReset
+  };
 })();
