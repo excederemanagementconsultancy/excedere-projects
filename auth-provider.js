@@ -1,9 +1,11 @@
 window.ExcedereAuth = (() => {
   'use strict';
 
-  const SUPABASE_URL = 'https://kxxyohagfmexvnzpuwys.supabase.co';
+  const SUPABASE_URL =
+    'https://kxxoyhagfmexvnzpuwys.supabase.co';
 
-  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_2gcvru1GxULE5nCVFNPgQw__vOGbDxx';
+  const SUPABASE_PUBLISHABLE_KEY =
+    'sb_publishable_2gcvru1GxULE5nCVFNPgQw__vOGbDxx';
 
   if (!window.supabase) {
     throw new Error('Supabase library failed to load.');
@@ -15,7 +17,8 @@ window.ExcedereAuth = (() => {
   );
 
   async function getSession() {
-    const { data, error } = await client.auth.getSession();
+    const { data, error } =
+      await client.auth.getSession();
 
     if (error) {
       throw error;
@@ -25,10 +28,11 @@ window.ExcedereAuth = (() => {
   }
 
   async function signIn({ email, password }) {
-    const { data, error } = await client.auth.signInWithPassword({
-      email: email.trim(),
-      password
-    });
+    const { data, error } =
+      await client.auth.signInWithPassword({
+        email: email.trim(),
+        password
+      });
 
     if (error) {
       throw error;
@@ -38,7 +42,8 @@ window.ExcedereAuth = (() => {
   }
 
   async function signOut() {
-    const { error } = await client.auth.signOut();
+    const { error } =
+      await client.auth.signOut();
 
     if (error) {
       throw error;
@@ -46,16 +51,28 @@ window.ExcedereAuth = (() => {
   }
 
   async function requestPasswordReset() {
-    const emailField = document.getElementById('signinEmail');
-    const email = emailField ? emailField.value.trim() : '';
+    const emailField =
+      document.getElementById('signinEmail');
+
+    const email =
+      emailField
+        ? emailField.value.trim()
+        : '';
 
     if (!email) {
-      throw new Error('Enter your email address first.');
+      throw new Error(
+        'Enter your email address first.'
+      );
     }
 
-    const { error } = await client.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.href
-    });
+    const { error } =
+      await client.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo:
+            'https://excederemanagementconsultancy.github.io/excedere-projects/'
+        }
+      );
 
     if (error) {
       throw error;
@@ -64,12 +81,33 @@ window.ExcedereAuth = (() => {
     return 'Password reset email sent. Check your inbox.';
   }
 
+  async function updatePassword(password) {
+    const { data, error } =
+      await client.auth.updateUser({
+        password
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    return data.user;
+  }
+
+  function onAuthStateChange(callback) {
+    return client.auth.onAuthStateChange(
+      callback
+    );
+  }
+
   return {
     key: 'excedereSupabaseSession',
     client,
     getSession,
     signIn,
     signOut,
-    requestPasswordReset
+    requestPasswordReset,
+    updatePassword,
+    onAuthStateChange
   };
 })();
