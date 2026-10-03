@@ -73,28 +73,22 @@
 
 .signin-intro{
   min-width:0;
-
   text-align:center;
 }
 
 
 .signin-brand{
   display:flex;
-
   flex-direction:column;
-
   align-items:center;
-
   gap:0;
-
-  margin-bottom:16px;
+  margin-bottom:22px;
 }
 
 
 .signin-brand img{
-  width:280px;
-
-  height:280px;
+  width:210px;
+  height:210px;
 
   max-width:100%;
 
@@ -102,7 +96,7 @@
 
   border-radius:0;
 
-  margin-bottom:-22px;
+  margin-bottom:14px;
 
   filter:
     drop-shadow(
@@ -272,34 +266,23 @@
 
 .signin-card > .eyebrow{
   font-size:.72rem;
-
   margin-bottom:12px;
-
-  color:
-    var(--gold);
+  color:var(--gold);
 }
 
 
 .signin-card h2{
   font-size:2.2rem;
-
   letter-spacing:-.035em;
-
   line-height:1.15;
-
-  color:
-    var(--text);
+  color:var(--text);
 }
 
 
 .signin-subtitle{
-  color:
-    var(--muted);
-
+  color:var(--muted);
   font-size:1.05rem;
-
   line-height:1.6;
-
   margin-top:10px;
 }
 
@@ -412,17 +395,14 @@
 
 
 #signinForm > input::placeholder{
-  color:
-    #647887;
+  color:#647887;
 }
 
 
 #signinForm > input:focus{
-  border-color:
-    var(--gold);
+  border-color:var(--gold);
 
-  background:
-    #081923;
+  background:#081923;
 
   box-shadow:
     0 0 0 3px
@@ -468,7 +448,6 @@
 
 .signin-remember input{
   width:18px;
-
   height:18px;
 
   accent-color:
@@ -612,6 +591,13 @@ and
   }
 
 
+  .signin-brand img{
+    width:185px;
+    height:185px;
+    margin-bottom:12px;
+  }
+
+
   .signin-brand-title{
     font-size:2.65rem;
   }
@@ -646,16 +632,16 @@ and
 
 
   .signin-brand{
-    margin-bottom:16px;
+    margin-bottom:18px;
   }
 
 
   .signin-brand img{
-    width:190px;
+    width:150px;
 
-    height:190px;
+    height:150px;
 
-    margin-bottom:-12px;
+    margin-bottom:12px;
   }
 
 
@@ -717,6 +703,12 @@ and
 
   .signin-card h2{
     font-size:2rem;
+  }
+
+
+  .signin-brand img{
+    width:130px;
+    height:130px;
   }
 
 
