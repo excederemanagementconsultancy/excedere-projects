@@ -2,10 +2,10 @@ window.ExcedereAuth = (() => {
   'use strict';
 
   const SUPABASE_URL =
-    'https://kxxoyhagfmexvnzpuwys.supabase.co';
+  'https://ydgbfupdyibayndvqamq.supabase.co';
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    'sb_publishable_2gcvru1GxULE5nCVFNPgQw__vOGbDxx';
+const SUPABASE_PUBLISHABLE_KEY =
+  'sb_publishable__-trTGzCx4SsNb6Knilcag__3oiv71f';;
 
   if (!window.supabase) {
     throw new Error('Supabase library failed to load.');
