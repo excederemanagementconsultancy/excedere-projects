@@ -10,7 +10,19 @@
   const notice = el('div', '', 'save-notice'); notice.setAttribute('role', 'status'); document.body.append(notice);
   function report(text, error = false) { clearTimeout(noticeTimer); notice.textContent = text; notice.classList.toggle('error', error); if (!error) noticeTimer = setTimeout(() => { notice.textContent = ''; }, 4000); }
   function attempt(action) { try { action(); return true; } catch (error) { report(`Could not save or load data. Existing data has been kept. ${error.message}`, true); return false; } }
-  function mutate(action) { if (attempt(action)) { report('Saved on this browser.'); refresh(); return true; } return false; }
+  function mutate(action) {
+  if (attempt(action)) {
+    report('Saved on this browser.');
+    refresh();
+
+    window.ExcedereProjectsCloudSync?.();
+
+    return true;
+  }
+
+  return false;
+}
+  
   const localDate = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   const dateLabel = value => value ? new Date(value + 'T12:00:00').toLocaleDateString(undefined, {year:'numeric',month:'short',day:'numeric'}) : 'No due date';
   const projects = ['Excedere Projects','Excedere CRM','Excedere Flow','Excedere Website','General'];
