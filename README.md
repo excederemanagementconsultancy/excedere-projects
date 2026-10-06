@@ -52,3 +52,5 @@ Publish `auth.css`, `auth.js`, and `auth-provider.js` alongside the existing fil
 - No horizontal overflow in seven main views at 320, 390, 800, 1024 and 1440 pixels; four workspace views at 320, 800 and 1440; sign-in at all five widths. No browser console warnings/errors in the checked local session.
 - Export backup was invoked in local previews. The in-app browser did not expose a download event; downloaded-file verification remains environment-limited. Export implementation is unchanged and tests confirm the new auth marker is excluded by its existing prefix filter.
 - All test records were created on localhost, separate from production browser storage.
+
+<!-- trigger Pages deployment -->
