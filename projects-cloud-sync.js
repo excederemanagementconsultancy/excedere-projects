@@ -1,4 +1,5 @@
 /* Live Supabase synchronisation for Excedere Projects.
+   Supabase is the source of truth.
    Browser storage remains as a local mirror and recovery copy. */
 (() => {
   'use strict';
@@ -70,6 +71,13 @@
     }
   }
 
+  function cloudMarker(
+    userId,
+    version
+  ) {
+    return `${userId}:${version}`;
+  }
+
   async function initialise() {
     if (initialisePromise) {
       return initialisePromise;
@@ -99,21 +107,28 @@
           );
         }
 
+        const marker =
+          cloudMarker(
+            session.user.id,
+            repo.version
+          );
+
         /*
-         * On a new browser/device, copy
-         * the cloud workspace into the
-         * local mirror once and reload.
+         * If the cloud version is newer
+         * than the version loaded into this
+         * browser session, refresh the local
+         * mirror from Supabase.
          */
         if (
           sessionStorage.getItem(
             HYDRATED_KEY
-          ) !== session.user.id
+          ) !== marker
         ) {
           workspace.apply(remote);
 
           sessionStorage.setItem(
             HYDRATED_KEY,
-            session.user.id
+            marker
           );
 
           location.reload();
@@ -158,6 +173,19 @@
 
         await repo.save(state);
 
+        const session =
+          await auth.getSession();
+
+        if (session?.user?.id) {
+          sessionStorage.setItem(
+            HYDRATED_KEY,
+            cloudMarker(
+              session.user.id,
+              repo.version
+            )
+          );
+        }
+
       } while (pending);
 
       notify(
@@ -190,17 +218,13 @@
   window.ExcedereProjectsCloudSync =
     scheduleSave;
 
-  /*
-   * app.js already emits this whenever
-   * the selected project changes.
-   */
   window.addEventListener(
     'excedere:project-change',
     scheduleSave
   );
 
   auth.onAuthStateChange(
-    (event) => {
+    event => {
       if (event === 'SIGNED_OUT') {
         ready = false;
         repo = null;
