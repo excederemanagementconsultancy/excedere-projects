@@ -1,6 +1,12 @@
-const tasksNav = document.getElementById("tasksNav");
-const dashboardView = document.getElementById("dashboardView");
-const tasksView = document.getElementById("tasksView");
+const tasksNav =
+  document.getElementById("tasksNav");
+
+const dashboardView =
+  document.getElementById("dashboardView");
+
+const tasksView =
+  document.getElementById("tasksView");
+
 
 function renderTasksPage() {
   window.refreshExcedere?.();
@@ -11,52 +17,146 @@ function renderTasksPage() {
 // EXCEDERE PROJECTS - MAIN NAVIGATION
 // =====================================================
 
-const todayNav = document.getElementById("todayNav");
-const projectsNav = document.getElementById("projectsNav");
+const todayNav =
+  document.getElementById("todayNav");
 
-const projectsView = document.getElementById("projectsView");
-const projectWorkspaceView = document.getElementById("projectWorkspaceView");
-const currentFocusView = document.getElementById("currentFocusView");
-const projectTasksView = document.getElementById("projectTasksView");
-const milestonesView = document.getElementById("milestonesView");
-const projectNotesView = document.getElementById("projectNotesView");
+const projectsNav =
+  document.getElementById("projectsNav");
 
-const currentFocusCard = document.getElementById("currentFocusCard");
-const projectTasksCard = document.getElementById("projectTasksCard");
-const milestonesCard = document.getElementById("milestonesCard");
-const projectNotesCard = document.getElementById("projectNotesCard");
+const projectsView =
+  document.getElementById("projectsView");
 
-const backToProjects = document.getElementById("backToProjects");
-const backToWorkspace = document.getElementById("backToWorkspace");
-const backFromProjectTasks = document.getElementById("backFromProjectTasks");
-const backFromMilestones = document.getElementById("backFromMilestones");
-const backFromProjectNotes = document.getElementById("backFromProjectNotes");
+const projectWorkspaceView =
+  document.getElementById(
+    "projectWorkspaceView"
+  );
 
-const currentFocusText = document.getElementById("currentFocusText");
-const currentStageText = document.getElementById("currentStageText");
-const nextActionText = document.getElementById("nextActionText");
-const overallProgressBar = document.getElementById("overallProgressBar");
-const overallProgressText = document.getElementById("overallProgressText");
+const currentFocusView =
+  document.getElementById(
+    "currentFocusView"
+  );
 
-const editCurrentFocus = document.getElementById("editCurrentFocus");
-const editCurrentStage = document.getElementById("editCurrentStage");
-const editNextAction = document.getElementById("editNextAction");
-const editOverallProgress = document.getElementById("editOverallProgress");
+const projectTasksView =
+  document.getElementById(
+    "projectTasksView"
+  );
 
-const addProjectTask = document.getElementById("addProjectTask");
-const projectTasksGrid = document.getElementById("projectTasksGrid");
+const milestonesView =
+  document.getElementById(
+    "milestonesView"
+  );
+
+const projectNotesView =
+  document.getElementById(
+    "projectNotesView"
+  );
+
+
+const currentFocusCard =
+  document.getElementById(
+    "currentFocusCard"
+  );
+
+const projectTasksCard =
+  document.getElementById(
+    "projectTasksCard"
+  );
+
+const milestonesCard =
+  document.getElementById(
+    "milestonesCard"
+  );
+
+const projectNotesCard =
+  document.getElementById(
+    "projectNotesCard"
+  );
+
+
+const backToProjects =
+  document.getElementById(
+    "backToProjects"
+  );
+
+const backToWorkspace =
+  document.getElementById(
+    "backToWorkspace"
+  );
+
+const backFromProjectTasks =
+  document.getElementById(
+    "backFromProjectTasks"
+  );
+
+const backFromMilestones =
+  document.getElementById(
+    "backFromMilestones"
+  );
+
+const backFromProjectNotes =
+  document.getElementById(
+    "backFromProjectNotes"
+  );
+
+
+const currentFocusText =
+  document.getElementById(
+    "currentFocusText"
+  );
+
+const currentStageText =
+  document.getElementById(
+    "currentStageText"
+  );
+
+const nextActionText =
+  document.getElementById(
+    "nextActionText"
+  );
+
+const overallProgressBar =
+  document.getElementById(
+    "overallProgressBar"
+  );
+
+const overallProgressText =
+  document.getElementById(
+    "overallProgressText"
+  );
+
+
+const projectTasksGrid =
+  document.getElementById(
+    "projectTasksGrid"
+  );
 
 
 // =====================================================
-// PROJECT WORKSPACE CONFIGURATION
+// PROJECT STORAGE
 // =====================================================
 
-const PROJECT_WORKSPACES = {
+const PROJECT_REGISTRY_KEY =
+  "excedereProjectRegistryV1";
+
+const ACTIVE_PROJECT_KEY =
+  "excedereActiveProjectWorkspace";
+
+
+// =====================================================
+// BUILT-IN PROJECTS
+// =====================================================
+
+const BUILT_IN_PROJECTS = {
 
   projects: {
-    name: "Excedere Projects",
-    shortName: "PROJECTS",
-    subtitle: "Plan, build and track the Excedere ecosystem.",
+    name:
+      "Excedere Projects",
+
+    shortName:
+      "PROJECTS",
+
+    subtitle:
+      "Plan, build and track the Excedere ecosystem.",
 
     focus:
       "Build and improve the Excedere project management platform.",
@@ -65,50 +165,20 @@ const PROJECT_WORKSPACES = {
       "Workspace structure, navigation and project intelligence.",
 
     next:
-      "Enable dedicated workspaces across every Excedere project.",
+      "Continue improving the Projects platform and connected Excedere ecosystem.",
 
-    progress: 40,
-
-    milestones: [
-      {
-        number: "01",
-        title: "Core Workspace",
-        description:
-          "Build the main Excedere Projects dashboard and navigation.",
-        stage: "Foundation",
-        status: "Complete"
-      },
-      {
-        number: "02",
-        title: "Project Workspaces",
-        description:
-          "Build Current Focus, Project Tasks, Milestones and Project Notes.",
-        stage: "Development",
-        status: "Complete"
-      },
-      {
-        number: "03",
-        title: "Task Integration",
-        description:
-          "Connect project workspaces with the main task management system.",
-        stage: "Integration",
-        status: "Complete"
-      },
-      {
-        number: "04",
-        title: "Project Intelligence",
-        description:
-          "Add progress tracking, project history and smarter workspace tools.",
-        stage: "Future Stage",
-        status: "In Progress"
-      }
-    ]
+    progress:
+      40
   },
 
 
   crm: {
-    name: "Excedere CRM",
-    shortName: "CRM",
+    name:
+      "Excedere CRM",
+
+    shortName:
+      "CRM",
+
     subtitle:
       "Manage prospects, customers, communication and sales activity.",
 
@@ -121,48 +191,18 @@ const PROJECT_WORKSPACES = {
     next:
       "Prepare the Multi-Provider Communication Framework.",
 
-    progress: 10,
-
-    milestones: [
-      {
-        number: "01",
-        title: "Core CRM",
-        description:
-          "Build companies, contacts, pipeline, activities and task management.",
-        stage: "Foundation",
-        status: "Complete"
-      },
-      {
-        number: "02",
-        title: "Smart Follow-Up",
-        description:
-          "Automatically connect contact follow-ups with CRM tasks.",
-        stage: "Automation",
-        status: "Complete"
-      },
-      {
-        number: "03",
-        title: "Dialer V1",
-        description:
-          "Connect CRM to Call Assist with call logging, timer and duration.",
-        stage: "Communication",
-        status: "Complete"
-      },
-      {
-        number: "04",
-        title: "Multi-Provider Communication",
-        description:
-          "Prepare support for device phone, GHL/Twilio, WhatsApp, Teams and Google.",
-        stage: "Next Stage",
-        status: "Planned"
-      }
-    ]
+    progress:
+      10
   },
 
 
   flow: {
-    name: "Excedere Flow",
-    shortName: "FLOW",
+    name:
+      "Excedere Flow",
+
+    shortName:
+      "FLOW",
+
     subtitle:
       "Plan work, organize priorities and keep activity moving.",
 
@@ -175,48 +215,18 @@ const PROJECT_WORKSPACES = {
     next:
       "Improve workflow automation and project integration.",
 
-    progress: 25,
-
-    milestones: [
-      {
-        number: "01",
-        title: "Core Navigation",
-        description:
-          "Build the Today, Tasks, Projects and Calendar experience.",
-        stage: "Foundation",
-        status: "Complete"
-      },
-      {
-        number: "02",
-        title: "Project Workspace",
-        description:
-          "Organize project activity and current priorities.",
-        stage: "Development",
-        status: "Complete"
-      },
-      {
-        number: "03",
-        title: "Calendar",
-        description:
-          "Connect planned work with a clear calendar view.",
-        stage: "Planning",
-        status: "Complete"
-      },
-      {
-        number: "04",
-        title: "Workflow Intelligence",
-        description:
-          "Add smarter automation and workflow assistance.",
-        stage: "Future Stage",
-        status: "Planned"
-      }
-    ]
+    progress:
+      25
   },
 
 
   website: {
-    name: "Excedere Website",
-    shortName: "WEBSITE",
+    name:
+      "Excedere Website",
+
+    shortName:
+      "WEBSITE",
+
     subtitle:
       "Manage the public Excedere consultancy website and digital presence.",
 
@@ -229,80 +239,229 @@ const PROJECT_WORKSPACES = {
     next:
       "Complete the next SEO and website visibility improvements.",
 
-    progress: 75,
-
-    milestones: [
-      {
-        number: "01",
-        title: "Core Website",
-        description:
-          "Build and launch the Excedere Management Consultancy website.",
-        stage: "Foundation",
-        status: "Complete"
-      },
-      {
-        number: "02",
-        title: "Brand & Booking",
-        description:
-          "Deploy Excedere branding and consultation booking.",
-        stage: "Conversion",
-        status: "Complete"
-      },
-      {
-        number: "03",
-        title: "Social Presence",
-        description:
-          "Connect the website with Excedere's wider marketing presence.",
-        stage: "Marketing",
-        status: "In Progress"
-      },
-      {
-        number: "04",
-        title: "SEO & Visibility",
-        description:
-          "Improve search visibility and organic discovery.",
-        stage: "Optimization",
-        status: "Planned"
-      }
-    ]
+    progress:
+      75
   }
 
 };
 
 
 // =====================================================
+// REGISTRY HELPERS
+// =====================================================
+
+function readProjectRegistry() {
+
+  const raw =
+    localStorage.getItem(
+      PROJECT_REGISTRY_KEY
+    );
+
+  if (!raw) {
+    return [];
+  }
+
+  try {
+
+    const parsed =
+      JSON.parse(raw);
+
+    return Array.isArray(parsed)
+      ? parsed.filter(
+          project =>
+            project &&
+            !project.deletedAt &&
+            project.name
+        )
+      : [];
+
+  } catch (error) {
+
+    console.warn(
+      "Project registry could not be read.",
+      error
+    );
+
+    return [];
+  }
+}
+
+
+function registryProjectKey(project) {
+
+  return (
+    `registry:${project.id}`
+  );
+}
+
+
+function getAllProjectEntries() {
+
+  const builtIns =
+    Object.entries(
+      BUILT_IN_PROJECTS
+    ).map(
+      ([key, project]) => ({
+        key,
+        project,
+        builtIn:
+          true
+      })
+    );
+
+  const registry =
+    readProjectRegistry()
+      .map(
+        project => ({
+          key:
+            registryProjectKey(
+              project
+            ),
+
+          project,
+
+          builtIn:
+            false
+        })
+      );
+
+  return [
+    ...builtIns,
+    ...registry
+  ];
+}
+
+
+function getProjectEntryByKey(
+  key
+) {
+
+  return (
+    getAllProjectEntries()
+      .find(
+        entry =>
+          entry.key === key
+      ) ||
+    null
+  );
+}
+
+
+function getProjectEntryByName(
+  name
+) {
+
+  const clean =
+    String(
+      name || ""
+    )
+      .trim()
+      .toLowerCase();
+
+  if (!clean) {
+    return null;
+  }
+
+  return (
+    getAllProjectEntries()
+      .find(
+        entry =>
+          String(
+            entry.project.name ||
+            ""
+          )
+            .trim()
+            .toLowerCase() ===
+          clean
+      ) ||
+    null
+  );
+}
+
+
+// =====================================================
 // ACTIVE PROJECT
 // =====================================================
 
-const ACTIVE_PROJECT_KEY = "excedereActiveProjectWorkspace";
-
 let activeProjectKey =
-  localStorage.getItem(ACTIVE_PROJECT_KEY) || "projects";
+  localStorage.getItem(
+    ACTIVE_PROJECT_KEY
+  ) ||
+  "projects";
+
+
+function ensureActiveProject() {
+
+  if (
+    !getProjectEntryByKey(
+      activeProjectKey
+    )
+  ) {
+
+    activeProjectKey =
+      "projects";
+
+    localStorage.setItem(
+      ACTIVE_PROJECT_KEY,
+      activeProjectKey
+    );
+  }
+}
+
+
+function getActiveProjectEntry() {
+
+  ensureActiveProject();
+
+  return (
+    getProjectEntryByKey(
+      activeProjectKey
+    ) ||
+    {
+      key:
+        "projects",
+
+      project:
+        BUILT_IN_PROJECTS
+          .projects,
+
+      builtIn:
+        true
+    }
+  );
+}
 
 
 function getActiveProject() {
 
   return (
-    PROJECT_WORKSPACES[activeProjectKey] ||
-    PROJECT_WORKSPACES.projects
+    getActiveProjectEntry()
+      .project
   );
 }
 
 
-function setActiveProject(key) {
+function setActiveProject(
+  key
+) {
 
-  if (!PROJECT_WORKSPACES[key]) {
-    key = "projects";
-  }
+  const entry =
+    getProjectEntryByKey(
+      key
+    );
 
-  activeProjectKey = key;
+  activeProjectKey =
+    entry
+      ? entry.key
+      : "projects";
 
   localStorage.setItem(
     ACTIVE_PROJECT_KEY,
     activeProjectKey
   );
 
-  window.excedereActiveProject = activeProjectKey;
+  window.excedereActiveProject =
+    activeProjectKey;
 
   applyActiveProject();
 
@@ -311,8 +470,11 @@ function setActiveProject(key) {
       "excedere:project-change",
       {
         detail: {
-          key: activeProjectKey,
-          project: getActiveProject()
+          key:
+            activeProjectKey,
+
+          project:
+            getActiveProject()
         }
       }
     )
@@ -320,12 +482,19 @@ function setActiveProject(key) {
 }
 
 
-window.getActiveExcedereProject = function () {
-  return {
-    key: activeProjectKey,
-    ...getActiveProject()
+window.getActiveExcedereProject =
+  function () {
+
+    const entry =
+      getActiveProjectEntry();
+
+    return {
+      key:
+        entry.key,
+
+      ...entry.project
+    };
   };
-};
 
 
 // =====================================================
@@ -335,40 +504,67 @@ window.getActiveExcedereProject = function () {
 function hideMainViews() {
 
   document
-    .querySelectorAll("main.main-content")
-    .forEach(view => {
-      view.style.display = "none";
-    });
+    .querySelectorAll(
+      "main.main-content"
+    )
+    .forEach(
+      view => {
+        view.style.display =
+          "none";
+      }
+    );
 }
 
 
-function setActiveNav(activeNav) {
+function setActiveNav(
+  activeNav
+) {
 
   document
-    .querySelectorAll(".nav-item")
-    .forEach(item => {
-      item.classList.remove("active");
-    });
+    .querySelectorAll(
+      ".nav-item"
+    )
+    .forEach(
+      item => {
+        item.classList.remove(
+          "active"
+        );
+      }
+    );
 
   if (activeNav) {
-    activeNav.classList.add("active");
+
+    activeNav.classList.add(
+      "active"
+    );
   }
 }
 
 
-function showView(view, activeNav = null) {
+function showView(
+  view,
+  activeNav = null
+) {
 
-  if (!view) return;
+  if (!view) {
+    return;
+  }
 
   hideMainViews();
 
-  view.style.display = "block";
+  view.style.display =
+    "block";
 
   if (activeNav) {
-    setActiveNav(activeNav);
+    setActiveNav(
+      activeNav
+    );
   }
 
-  window.scrollTo(0, 0);
+  window.scrollTo(
+    0,
+    0
+  );
 }
 
 
@@ -376,41 +572,124 @@ function showView(view, activeNav = null) {
 // TEXT HELPERS
 // =====================================================
 
-function setText(element, value) {
+function setText(
+  element,
+  value
+) {
 
   if (element) {
-    element.textContent = value;
+
+    element.textContent =
+      value ?? "";
   }
 }
 
 
-function findHeading(view, selector) {
+function findHeading(
+  view,
+  selector
+) {
 
-  if (!view) return null;
+  if (!view) {
+    return null;
+  }
 
-  return view.querySelector(selector);
+  return (
+    view.querySelector(
+      selector
+    )
+  );
+}
+
+
+function clampProgress(
+  value
+) {
+
+  const number =
+    Number(value);
+
+  if (
+    !Number.isFinite(
+      number
+    )
+  ) {
+    return 0;
+  }
+
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      number
+    )
+  );
+}
+
+
+function displayProgress(
+  project
+) {
+
+  /*
+   * Keep the original editable
+   * Projects progress value working.
+   */
+  if (
+    project.name ===
+    "Excedere Projects"
+  ) {
+
+    const saved =
+      localStorage.getItem(
+        "excedereOverallProgress"
+      );
+
+    if (
+      saved !== null &&
+      Number.isFinite(
+        Number(saved)
+      )
+    ) {
+
+      return clampProgress(
+        saved
+      );
+    }
+  }
+
+  return clampProgress(
+    project.progress
+  );
 }
 
 
 // =====================================================
-// APPLY ACTIVE PROJECT TO WORKSPACES
+// APPLY ACTIVE PROJECT
 // =====================================================
 
 function applyActiveProject() {
 
-  const project = getActiveProject();
+  const project =
+    getActiveProject();
+
+  const progress =
+    displayProgress(
+      project
+    );
 
 
-  // ===================================================
+  // ---------------------------------------------------
   // MAIN PROJECT WORKSPACE
-  // ===================================================
+  // ---------------------------------------------------
 
   setText(
     findHeading(
       projectWorkspaceView,
       ".topbar .eyebrow"
     ),
-    project.name.toUpperCase()
+    project.name
+      .toUpperCase()
   );
 
   setText(
@@ -438,16 +717,17 @@ function applyActiveProject() {
   );
 
 
-  // ===================================================
+  // ---------------------------------------------------
   // CURRENT FOCUS
-  // ===================================================
+  // ---------------------------------------------------
 
   setText(
     findHeading(
       currentFocusView,
       ".topbar .eyebrow"
     ),
-    project.name.toUpperCase()
+    project.name
+      .toUpperCase()
   );
 
   setText(
@@ -474,40 +754,51 @@ function applyActiveProject() {
     project.name
   );
 
+  setText(
+    currentFocusText,
+    project.focus
+  );
 
-  if (currentFocusText) {
-    currentFocusText.textContent = project.focus;
+  setText(
+    currentStageText,
+    project.stage
+  );
+
+  setText(
+    nextActionText,
+    project.next
+  );
+
+  if (
+    overallProgressBar
+  ) {
+
+    overallProgressBar
+      .style.width =
+      `${progress}%`;
   }
 
-  if (currentStageText) {
-    currentStageText.textContent = project.stage;
-  }
+  if (
+    overallProgressText
+  ) {
 
-  if (nextActionText) {
-    nextActionText.textContent = project.next;
-  }
-
-  if (overallProgressBar) {
-    overallProgressBar.style.width =
-      `${project.progress}%`;
-  }
-
-  if (overallProgressText) {
-    overallProgressText.textContent =
-      `${project.progress}% complete`;
+    overallProgressText
+      .textContent =
+      `${progress}% complete`;
   }
 
 
-  // ===================================================
+  // ---------------------------------------------------
   // PROJECT TASKS
-  // ===================================================
+  // ---------------------------------------------------
 
   setText(
     findHeading(
       projectTasksView,
       ".topbar .eyebrow"
     ),
-    project.name.toUpperCase()
+    project.name
+      .toUpperCase()
   );
 
   setText(
@@ -534,33 +825,27 @@ function applyActiveProject() {
     project.name
   );
 
+  if (
+    projectTasksGrid
+  ) {
 
-  // Tell the task system which project is active.
-
-  if (projectTasksGrid) {
-    projectTasksGrid.dataset.project =
+    projectTasksGrid
+      .dataset.project =
       project.name;
   }
 
 
-  // If features.js exposes a project-task refresh,
-  // use it automatically.
-
-  window.renderProjectTasksForProject?.(
-    project.name
-  );
-
-
-  // ===================================================
+  // ---------------------------------------------------
   // MILESTONES
-  // ===================================================
+  // ---------------------------------------------------
 
   setText(
     findHeading(
       milestonesView,
       ".topbar .eyebrow"
     ),
-    project.name.toUpperCase()
+    project.name
+      .toUpperCase()
   );
 
   setText(
@@ -587,19 +872,18 @@ function applyActiveProject() {
     project.name
   );
 
-  renderProjectMilestones();
 
-
-  // ===================================================
+  // ---------------------------------------------------
   // PROJECT NOTES
-  // ===================================================
+  // ---------------------------------------------------
 
   setText(
     findHeading(
       projectNotesView,
       ".topbar .eyebrow"
     ),
-    project.name.toUpperCase()
+    project.name
+      .toUpperCase()
   );
 
   setText(
@@ -627,179 +911,400 @@ function applyActiveProject() {
   );
 
 
-  // ===================================================
-  // BACK BUTTON LABELS
-  // ===================================================
+  // ---------------------------------------------------
+  // BACK BUTTONS
+  // ---------------------------------------------------
 
-  if (backToWorkspace) {
-    backToWorkspace.textContent =
+  if (
+    backToWorkspace
+  ) {
+
+    backToWorkspace
+      .textContent =
       `← Back to ${project.name}`;
   }
 
-  if (backFromProjectTasks) {
-    backFromProjectTasks.textContent =
+  if (
+    backFromProjectTasks
+  ) {
+
+    backFromProjectTasks
+      .textContent =
       `← Back to ${project.name}`;
   }
 
-  if (backFromMilestones) {
-    backFromMilestones.textContent =
+  if (
+    backFromMilestones
+  ) {
+
+    backFromMilestones
+      .textContent =
       `← Back to ${project.name}`;
   }
 
-  if (backFromProjectNotes) {
-    backFromProjectNotes.textContent =
+  if (
+    backFromProjectNotes
+  ) {
+
+    backFromProjectNotes
+      .textContent =
       `← Back to ${project.name}`;
   }
+
+
+  /*
+   * features.js owns the actual
+   * task, milestone and note records.
+   */
+  window.refreshExcedere?.();
 }
 
 
 // =====================================================
-// MILESTONE RENDERER
+// PROJECT CARDS
 // =====================================================
 
-function renderProjectMilestones() {
+function createProjectCard(
+  entry
+) {
 
-  if (!milestonesView) return;
+  const project =
+    entry.project;
 
-  const project = getActiveProject();
-
-  const grid =
-    milestonesView.querySelector(
-      ".project-grid"
+  const progress =
+    displayProgress(
+      project
     );
 
-  if (!grid) return;
+  const card =
+    document.createElement(
+      "article"
+    );
+
+  card.className =
+    "project-card";
+
+  card.dataset.projectKey =
+    entry.key;
+
+  card.tabIndex =
+    0;
+
+  card.setAttribute(
+    "role",
+    "button"
+  );
+
+  card.style.cursor =
+    "pointer";
 
 
-  grid.innerHTML =
-    project.milestones
-      .map(milestone => {
+  const icon =
+    document.createElement(
+      "div"
+    );
 
-        return `
-          <article class="project-card">
+  icon.className =
+    "project-icon";
 
-            <div class="project-icon">
-              ${milestone.number}
-            </div>
+  const shortName =
+    String(
+      project.shortName ||
+      project.name ||
+      "PR"
+    )
+      .replace(
+        /[^a-zA-Z0-9]/g,
+        ""
+      )
+      .toUpperCase();
 
-            <h3>
-              ${milestone.title}
-            </h3>
-
-            <p>
-              ${milestone.description}
-            </p>
-
-            <div class="project-footer">
-
-              <span>
-                ${milestone.stage}
-              </span>
-
-              <strong>
-                ${milestone.status}
-              </strong>
-
-            </div>
-
-          </article>
-        `;
-
-      })
-      .join("");
-}
-
-
-// =====================================================
-// PROJECT CARD HELPERS
-// =====================================================
-
-function getProjectKeyFromName(name) {
-
-  const clean =
-    String(name || "")
-      .trim()
-      .toLowerCase();
-
-
-  if (clean === "excedere projects") {
-    return "projects";
-  }
-
-  if (clean === "excedere crm") {
-    return "crm";
-  }
-
-  if (clean === "excedere flow") {
-    return "flow";
-  }
-
-  if (clean === "excedere website") {
-    return "website";
-  }
-
-  return null;
-}
-
-
-function wireProjectCard(card) {
-
-  if (!card) return;
-
-  const heading =
-    card.querySelector("h3");
-
-  if (!heading) return;
-
-
-  const key =
-    getProjectKeyFromName(
-      heading.textContent
+  icon.textContent =
+    shortName.slice(
+      0,
+      3
     );
 
 
-  if (!key) return;
+  const title =
+    document.createElement(
+      "h3"
+    );
+
+  title.textContent =
+    project.name;
 
 
-  card.style.cursor = "pointer";
+  const description =
+    document.createElement(
+      "p"
+    );
 
-  card.dataset.projectKey = key;
+  description.textContent =
+    project.subtitle ||
+    "Excedere project workspace.";
 
 
-  card.addEventListener(
-    "click",
+  const progressWrap =
+    document.createElement(
+      "div"
+    );
+
+  progressWrap.className =
+    "progress";
+
+
+  const progressFill =
+    document.createElement(
+      "span"
+    );
+
+  progressFill.style.width =
+    `${progress}%`;
+
+  progressWrap.append(
+    progressFill
+  );
+
+
+  const footer =
+    document.createElement(
+      "div"
+    );
+
+  footer.className =
+    "project-footer";
+
+
+  const progressText =
+    document.createElement(
+      "span"
+    );
+
+  progressText.textContent =
+    `${progress}% complete`;
+
+
+  const status =
+    document.createElement(
+      "strong"
+    );
+
+  status.textContent =
+    progress >= 100
+      ? "Complete"
+      : "Active";
+
+
+  footer.append(
+    progressText,
+    status
+  );
+
+
+  card.append(
+    icon,
+    title,
+    description,
+    progressWrap,
+    footer
+  );
+
+
+  const open =
     () => {
 
-      setActiveProject(key);
+      setActiveProject(
+        entry.key
+      );
 
       showView(
         projectWorkspaceView,
         projectsNav
       );
+    };
+
+
+  card.addEventListener(
+    "click",
+    open
+  );
+
+
+  card.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key ===
+          "Enter" ||
+        event.key ===
+          " "
+      ) {
+
+        event.preventDefault();
+
+        open();
+      }
     }
+  );
+
+
+  return card;
+}
+
+
+function renderProjectCards() {
+
+  if (
+    !projectsView
+  ) {
+    return;
+  }
+
+  const grid =
+    projectsView.querySelector(
+      ".project-grid"
+    );
+
+  if (!grid) {
+
+    console.warn(
+      "Projects grid was not found."
+    );
+
+    return;
+  }
+
+  const entries =
+    getAllProjectEntries();
+
+  grid.replaceChildren(
+    ...entries.map(
+      createProjectCard
+    )
   );
 }
 
 
 // =====================================================
-// WIRE ALL PROJECT CARDS
+// DASHBOARD PROJECT CARDS
 // =====================================================
 
-function wireAllProjectCards() {
-
-  document
-    .querySelectorAll(
-      "#projectsView .project-card"
-    )
-    .forEach(wireProjectCard);
-
+function wireDashboardProjectCards() {
 
   document
     .querySelectorAll(
       "#dashboardView .project-card"
     )
-    .forEach(wireProjectCard);
+    .forEach(
+      card => {
+
+        if (
+          card.dataset
+            .excedereProjectWired ===
+          "1"
+        ) {
+          return;
+        }
+
+        const heading =
+          card.querySelector(
+            "h3"
+          );
+
+        if (!heading) {
+          return;
+        }
+
+        const entry =
+          getProjectEntryByName(
+            heading.textContent
+          );
+
+        if (!entry) {
+          return;
+        }
+
+        card.dataset
+          .excedereProjectWired =
+          "1";
+
+        card.dataset.projectKey =
+          entry.key;
+
+        card.tabIndex =
+          0;
+
+        card.setAttribute(
+          "role",
+          "button"
+        );
+
+        card.style.cursor =
+          "pointer";
+
+
+        const open =
+          () => {
+
+            setActiveProject(
+              entry.key
+            );
+
+            showView(
+              projectWorkspaceView,
+              projectsNav
+            );
+          };
+
+
+        card.addEventListener(
+          "click",
+          open
+        );
+
+
+        card.addEventListener(
+          "keydown",
+          event => {
+
+            if (
+              event.key ===
+                "Enter" ||
+              event.key ===
+                " "
+            ) {
+
+              event.preventDefault();
+
+              open();
+            }
+          }
+        );
+      }
+    );
 }
+
+
+// =====================================================
+// REFRESH PROJECT DIRECTORY
+// =====================================================
+
+function refreshProjectDirectory() {
+
+  ensureActiveProject();
+
+  renderProjectCards();
+
+  wireDashboardProjectCards();
+
+  applyActiveProject();
+}
+
+
+window.refreshExcedereProjectDirectory =
+  refreshProjectDirectory;
 
 
 // =====================================================
@@ -816,6 +1321,8 @@ if (todayNav) {
         dashboardView,
         todayNav
       );
+
+      window.refreshExcedere?.();
     }
   );
 }
@@ -852,6 +1359,8 @@ if (projectsNav) {
     "click",
     () => {
 
+      renderProjectCards();
+
       showView(
         projectsView,
         projectsNav
@@ -870,6 +1379,8 @@ if (backToProjects) {
   backToProjects.addEventListener(
     "click",
     () => {
+
+      renderProjectCards();
 
       showView(
         projectsView,
@@ -939,9 +1450,12 @@ if (projectTasksCard) {
         projectsNav
       );
 
-      window.renderProjectTasksForProject?.(
-        getActiveProject().name
-      );
+      window
+        .renderProjectTasksForProject
+        ?.(
+          getActiveProject()
+            .name
+        );
     }
   );
 }
@@ -953,18 +1467,19 @@ if (projectTasksCard) {
 
 if (backFromProjectTasks) {
 
-  backFromProjectTasks.addEventListener(
-    "click",
-    () => {
+  backFromProjectTasks
+    .addEventListener(
+      "click",
+      () => {
 
-      applyActiveProject();
+        applyActiveProject();
 
-      showView(
-        projectWorkspaceView,
-        projectsNav
-      );
-    }
-  );
+        showView(
+          projectWorkspaceView,
+          projectsNav
+        );
+      }
+    );
 }
 
 
@@ -980,12 +1495,12 @@ if (milestonesCard) {
 
       applyActiveProject();
 
-      renderProjectMilestones();
-
       showView(
         milestonesView,
         projectsNav
       );
+
+      window.refreshExcedere?.();
     }
   );
 }
@@ -997,18 +1512,19 @@ if (milestonesCard) {
 
 if (backFromMilestones) {
 
-  backFromMilestones.addEventListener(
-    "click",
-    () => {
+  backFromMilestones
+    .addEventListener(
+      "click",
+      () => {
 
-      applyActiveProject();
+        applyActiveProject();
 
-      showView(
-        projectWorkspaceView,
-        projectsNav
-      );
-    }
-  );
+        showView(
+          projectWorkspaceView,
+          projectsNav
+        );
+      }
+    );
 }
 
 
@@ -1029,9 +1545,12 @@ if (projectNotesCard) {
         projectsNav
       );
 
-      window.renderProjectNotesForProject?.(
-        getActiveProject().name
-      );
+      window
+        .renderProjectNotesForProject
+        ?.(
+          getActiveProject()
+            .name
+        );
     }
   );
 }
@@ -1043,19 +1562,74 @@ if (projectNotesCard) {
 
 if (backFromProjectNotes) {
 
-  backFromProjectNotes.addEventListener(
-    "click",
-    () => {
+  backFromProjectNotes
+    .addEventListener(
+      "click",
+      () => {
+
+        applyActiveProject();
+
+        showView(
+          projectWorkspaceView,
+          projectsNav
+        );
+      }
+    );
+}
+
+
+// =====================================================
+// PROJECT REGISTRY CHANGES
+// =====================================================
+
+window.addEventListener(
+  "excedere:projects-registry-updated",
+  () => {
+
+    refreshProjectDirectory();
+  }
+);
+
+
+// Cloud restore can update localStorage.
+// Refresh when another context changes it.
+
+window.addEventListener(
+  "storage",
+  event => {
+
+    if (
+      !event.key ||
+      event.key ===
+        PROJECT_REGISTRY_KEY ||
+      event.key ===
+        ACTIVE_PROJECT_KEY
+    ) {
+
+      refreshProjectDirectory();
+    }
+  }
+);
+
+
+// =====================================================
+// PAGE VISIBILITY
+// =====================================================
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    if (
+      !document.hidden
+    ) {
+
+      renderProjectCards();
 
       applyActiveProject();
-
-      showView(
-        projectWorkspaceView,
-        projectsNav
-      );
     }
-  );
-}
+  }
+);
 
 
 // =====================================================
@@ -1064,14 +1638,14 @@ if (backFromProjectNotes) {
 
 function initializeProjectWorkspaces() {
 
-  if (!PROJECT_WORKSPACES[activeProjectKey]) {
-    activeProjectKey = "projects";
-  }
+  ensureActiveProject();
 
   window.excedereActiveProject =
     activeProjectKey;
 
-  wireAllProjectCards();
+  renderProjectCards();
+
+  wireDashboardProjectCards();
 
   applyActiveProject();
 }
