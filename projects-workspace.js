@@ -31,10 +31,81 @@
   const SEED_KEY =
     'excedereSeedTasksV1';
 
+  const PROJECT_REGISTRY_KEY =
+    'excedereProjectRegistryV1';
+
+  const PROJECT_REGISTRY_BACKUP_KEY =
+    'excedereProjectRegistryBackupV1';
+
+  const COMMERCIAL_PROJECT_SEED_KEY =
+    'excedereCommercialProjectsSeedV1';
+
+
   function localValue(key) {
-    const value = localStorage.getItem(key);
-    return value === null ? null : value;
+    const value =
+      localStorage.getItem(key);
+
+    return value === null
+      ? null
+      : value;
   }
+
+
+  function readProjectRegistry() {
+    const raw =
+      localStorage.getItem(
+        PROJECT_REGISTRY_KEY
+      );
+
+    if (!raw) {
+      return [];
+    }
+
+    try {
+      const parsed =
+        JSON.parse(raw);
+
+      return Array.isArray(parsed)
+        ? parsed
+        : [];
+    } catch (error) {
+      console.warn(
+        'Could not read project registry.',
+        error
+      );
+
+      return [];
+    }
+  }
+
+
+  function writeProjectRegistry(projects) {
+    if (!Array.isArray(projects)) {
+      throw new Error(
+        'Project registry is invalid.'
+      );
+    }
+
+    const existing =
+      localStorage.getItem(
+        PROJECT_REGISTRY_KEY
+      );
+
+    if (existing !== null) {
+      localStorage.setItem(
+        PROJECT_REGISTRY_BACKUP_KEY,
+        existing
+      );
+    }
+
+    localStorage.setItem(
+      PROJECT_REGISTRY_KEY,
+      JSON.stringify(
+        structuredClone(projects)
+      )
+    );
+  }
+
 
   function validate(workspace) {
     if (
@@ -49,18 +120,43 @@
 
     if (
       !workspace.records ||
-      !Array.isArray(workspace.records.tasks) ||
-      !Array.isArray(workspace.records.captures) ||
-      !Array.isArray(workspace.records.milestones) ||
-      !Array.isArray(workspace.records.notes)
+      !Array.isArray(
+        workspace.records.tasks
+      ) ||
+      !Array.isArray(
+        workspace.records.captures
+      ) ||
+      !Array.isArray(
+        workspace.records.milestones
+      ) ||
+      !Array.isArray(
+        workspace.records.notes
+      )
     ) {
       throw new Error(
         'Projects workspace records are invalid.'
       );
     }
 
+    /*
+     * Older cloud workspaces do not
+     * contain a project registry.
+     *
+     * This is intentionally optional
+     * so existing data remains valid.
+     */
+    if (
+      workspace.projects !== undefined &&
+      !Array.isArray(workspace.projects)
+    ) {
+      throw new Error(
+        'Projects registry is invalid.'
+      );
+    }
+
     return workspace;
   }
+
 
   function snapshot() {
     return validate({
@@ -90,6 +186,15 @@
             store.read(notesKey)
           )
       },
+
+      /*
+       * User-created projects now
+       * travel with the cloud workspace.
+       */
+      projects:
+        structuredClone(
+          readProjectRegistry()
+        ),
 
       projectStatus: {
         currentFocus:
@@ -122,13 +227,25 @@
         seedTasksV1:
           localValue(
             SEED_KEY
+          ),
+
+        commercialProjectsSeedV1:
+          localValue(
+            COMMERCIAL_PROJECT_SEED_KEY
           )
       }
     });
   }
 
-  function restoreValue(key, value) {
-    if (value === null || value === undefined) {
+
+  function restoreValue(
+    key,
+    value
+  ) {
+    if (
+      value === null ||
+      value === undefined
+    ) {
       localStorage.removeItem(key);
     } else {
       localStorage.setItem(
@@ -137,6 +254,7 @@
       );
     }
   }
+
 
   function apply(workspace) {
     const state =
@@ -167,6 +285,27 @@
       notesKey,
       state.records.notes
     );
+
+
+    /*
+     * Important:
+     *
+     * Older cloud snapshots have no
+     * projects property.
+     *
+     * In that situation we DO NOT erase
+     * a newer local project registry.
+     */
+    if (
+      Array.isArray(
+        state.projects
+      )
+    ) {
+      writeProjectRegistry(
+        state.projects
+      );
+    }
+
 
     restoreValue(
       STATUS_KEYS.currentFocus,
@@ -199,13 +338,47 @@
       state.preferences?.seedTasksV1
     );
 
+
+    /*
+     * Only restore this when the incoming
+     * workspace actually contains it.
+     *
+     * This protects the first upgrade
+     * from older cloud snapshots.
+     */
+    if (
+      state.preferences
+        ?.commercialProjectsSeedV1 !==
+      undefined
+    ) {
+      restoreValue(
+        COMMERCIAL_PROJECT_SEED_KEY,
+        state.preferences
+          .commercialProjectsSeedV1
+      );
+    }
+
+
+    window.dispatchEvent(
+      new CustomEvent(
+        'excedere:projects-registry-updated'
+      )
+    );
+
+    window.refreshExcedere?.();
+
     return state;
   }
 
+
   function summary() {
-    const state = snapshot();
+    const state =
+      snapshot();
 
     return {
+      projects:
+        state.projects.length,
+
       tasks:
         state.records.tasks.length,
 
@@ -219,6 +392,7 @@
         state.records.notes.length
     };
   }
+
 
   window.ExcedereProjectsWorkspace = {
     snapshot,
