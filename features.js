@@ -2317,6 +2317,49 @@
   window.refreshExcedere =
     refresh;
 
+  // Resolve stable task IDs only after the account workspace is ready.
+  let handledTaskLink = '';
+  function openLinkedTask() {
+    const app = $('authenticatedApp');
+    if (!window.ExcedereProjectsCloudReady?.() || app?.hidden || app?.inert || dialog.open) return;
+    if (!location.hash.startsWith('#task=') || handledTaskLink === location.hash) return;
+    let id;
+    try {
+      id = decodeURIComponent(location.hash.slice(6));
+      if (!id || id.length > 256) throw Error('Invalid task link.');
+    } catch {
+      handledTaskLink = location.hash;
+      report('This task link is invalid.', true);
+      return;
+    }
+    const item = readAll().find(record => record.id === id && record.type === 'Task' && !record.deletedAt);
+    handledTaskLink = location.hash;
+    if (!item) {
+      report('This task is unavailable in your current account. It may have been deleted.', true);
+      return;
+    }
+    if (item.status === 'completed') {
+      showView(views.Completed.view, $('completedNav'));
+    } else {
+      taskFilter.value = item.project;
+      showView($('tasksView'), $('tasksNav'));
+    }
+    refresh();
+    editItem(item.key, item, 'Task', item.project);
+  }
+  window.ExcedereProjectsOpenLinkedTask = openLinkedTask;
+  window.addEventListener('hashchange', () => {
+    handledTaskLink = '';
+    openLinkedTask();
+  });
+  dialog.addEventListener('close', openLinkedTask);
+  new MutationObserver(() => {
+    if ($('authenticatedApp').hidden) handledTaskLink = '';
+    openLinkedTask();
+  }).observe($('authenticatedApp'), {
+    attributes: true, attributeFilter: ['hidden', 'inert']
+  });
+
   window.addEventListener(
     'storage',
     () => {

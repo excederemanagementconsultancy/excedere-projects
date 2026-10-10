@@ -9,7 +9,7 @@
   const PREFIX = 'excedereProjectsPendingV1:';
   let repo = null, owner = null, ready = false, saving = false;
   let blocked = false, timer = null, initialising = null, generation = 0;
-  let journal = null, recoveryFailed = false;
+  let journal = null, recoveryFailed = false, refreshing = false;
   const app = document.getElementById('authenticatedApp');
   if (app) app.inert = true;
   const key = user => PREFIX + user;
@@ -99,6 +99,7 @@
         notify(blocked
           ? 'Recovered unsynced changes. Your account has newer work. Export a backup before resolving the conflict. Automatic sync is paused.'
           : 'Recovered unsynced changes in this browser. Use Retry sync to save them to your account.', true);
+        window.ExcedereProjectsOpenLinkedTask?.();
         return true;
       }
       if (!remote) throw Error('No Projects cloud workspace exists for this account.');
@@ -111,6 +112,7 @@
       ready = true;
       if (app) app.inert = false;
       notify('Your account workspace is up to date.');
+      window.ExcedereProjectsOpenLinkedTask?.();
       return true;
     })();
     try { return await initialising; }
@@ -188,6 +190,39 @@
     catch (error) { recoveryFailed = true; storageWarning(); }
   }
   window.ExcedereProjectsCloudSync = scheduleSave;
+  window.ExcedereProjectsCloudReady = () => ready;
+
+  // Do not hydrate over pending edits, conflicts, failed recovery or an open editor.
+  async function refreshRemote() {
+    if (!ready || !repo || !owner || journal || saving || blocked || recoveryFailed || refreshing ||
+        document.hidden || document.querySelector('dialog[open]')) return;
+    const token = generation, currentRepo = repo, currentOwner = owner;
+    refreshing = true;
+    try {
+      if (readPending(currentOwner)) return;
+      const before = workspace.snapshot();
+      const candidate = new CloudRepository(auth.client, currentOwner);
+      const remote = await candidate.load();
+      if (token !== generation || repo !== currentRepo || journal || saving || blocked || recoveryFailed ||
+          document.querySelector('dialog[open]') || readPending(currentOwner) ||
+          !samePayload(before, workspace.snapshot())) return;
+      if (!remote || candidate.version < currentRepo.version) throw Error('The account version could not be verified.');
+      if (candidate.version === currentRepo.version) return;
+      workspace.validate(remote);
+      workspace.apply(remote);
+      repo = candidate;
+      sessionStorage.setItem(HYDRATED_KEY, marker());
+      notify('Updated from your account.');
+      window.ExcedereProjectsOpenLinkedTask?.();
+    } catch (error) {
+      if (token === generation) notify(`Account refresh could not finish. Your browser data is retained. ${error.message}`, true);
+    } finally { refreshing = false; }
+  }
+  window.ExcedereProjectsRefresh = refreshRemote;
+  window.addEventListener('focus', refreshRemote);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshRemote(); });
+  document.addEventListener('close', refreshRemote, true);
+  setInterval(refreshRemote, 60000);
   window.addEventListener('excedere:project-change', scheduleSave);
   window.addEventListener('beforeunload', event => {
     if (journal || recoveryFailed) { event.preventDefault(); event.returnValue = ''; }
