@@ -412,7 +412,7 @@
         String(data.next || '').trim() ||
         'Define the next action.',
 
-      progress: Math.max(0, Math.min(100, Number(data.progress) || 0))
+      progress: project.progress
     });
   }
 
@@ -671,17 +671,7 @@
       'textarea'
     );
 
-    const progress = projectField(
-      form,
-      'Progress (0 to 100)',
-      'progress',
-      String(project?.progress ?? 0)
-    );
-
-    progress.type = 'number';
-    progress.min = '0';
-    progress.max = '100';
-    progress.step = '1';
+    form.append(el('p', 'Progress is calculated automatically from completed milestones.'));
 
     const actions = el('div', undefined, 'item-actions');
 
@@ -1482,16 +1472,12 @@
       );
     }
 
-    $('editOverallProgress')?.addEventListener(
-      'click',
-      () =>
-        editFocus(
-          'excedereOverallProgress',
-          null,
-          'Overall Progress',
-          true
-        )
-    );
+    const progressControl = $('editOverallProgress');
+    if (progressControl) {
+      progressControl.textContent = 'Calculated from milestones';
+      progressControl.disabled = true;
+    }
+
   }
 
   attempt(() => {
@@ -2157,55 +2143,7 @@
 
     refreshProjectAdmin();
 
-    attempt(() => {
-      const registryProject =
-        findRegistryProject(
-          activeName
-        );
-
-      const saved =
-        localStorage.getItem(
-          'excedereOverallProgress'
-        );
-
-      const progress =
-        registryProject
-          ? Math.max(
-              0,
-              Math.min(
-                100,
-                Number(
-                  registryProject.progress
-                ) || 0
-              )
-            )
-          : saved !== null &&
-            Number.isFinite(
-              Number(saved)
-            )
-          ? Math.max(
-              0,
-              Math.min(
-                100,
-                Number(saved)
-              )
-            )
-          : 40;
-
-      if (
-        $('overallProgressBar')
-      ) {
-        $('overallProgressBar').style.width =
-          `${progress}%`;
-      }
-
-      if (
-        $('overallProgressText')
-      ) {
-        $('overallProgressText').textContent =
-          `${progress}% complete`;
-      }
-    });
+    window.refreshExcedereProgress?.();
   }
 
   document

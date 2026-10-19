@@ -602,66 +602,45 @@ function findHeading(
 }
 
 
-function clampProgress(
-  value
-) {
-
-  const number =
-    Number(value);
-
-  if (
-    !Number.isFinite(
-      number
-    )
-  ) {
-    return 0;
+// Derive progress from existing records without rewriting historical percentages.
+function displayProgress(project) {
+  try {
+    const store = window.ExcedereStore;
+    if (!store) throw new Error("Milestone storage is unavailable.");
+    const milestones = store.keys.flatMap(key => store.read(key)).filter(
+      item => item.type === "Milestone" && !item.deletedAt &&
+        item.project === project.name
+    );
+    return milestones.length
+      ? Math.round(100 * milestones.filter(item => item.status === "completed").length / milestones.length)
+      : 0;
+  } catch (error) {
+    return null;
   }
-
-  return Math.max(
-    0,
-    Math.min(
-      100,
-      number
-    )
-  );
 }
 
-
-function displayProgress(
-  project
-) {
-
-  /*
-   * Keep the original editable
-   * Projects progress value working.
-   */
-  if (
-    project.name ===
-    "Excedere Projects"
-  ) {
-
-    const saved =
-      localStorage.getItem(
-        "excedereOverallProgress"
-      );
-
-    if (
-      saved !== null &&
-      Number.isFinite(
-        Number(saved)
-      )
-    ) {
-
-      return clampProgress(
-        saved
-      );
-    }
-  }
-
-  return clampProgress(
-    project.progress
-  );
+function progressLabel(progress) {
+  return progress === null
+    ? "Progress unavailable: milestone data could not be read."
+    : `${progress}% complete`;
 }
+
+function paintProgress(container, progress) {
+  const bar = container?.querySelector(".progress span");
+  const text = container?.querySelector(".project-footer span");
+  if (bar) bar.style.width = `${progress ?? 0}%`;
+  if (text) text.textContent = progressLabel(progress);
+}
+
+function refreshProgressDisplays() {
+  renderProjectCards();
+  wireDashboardProjectCards();
+  const progress = displayProgress(getActiveProject());
+  if (overallProgressBar) overallProgressBar.style.width = `${progress ?? 0}%`;
+  if (overallProgressText) overallProgressText.textContent = progressLabel(progress);
+}
+
+window.refreshExcedereProgress = refreshProgressDisplays;
 
 
 // =====================================================
@@ -775,7 +754,7 @@ function applyActiveProject() {
 
     overallProgressBar
       .style.width =
-      `${progress}%`;
+      `${progress ?? 0}%`;
   }
 
   if (
@@ -784,7 +763,7 @@ function applyActiveProject() {
 
     overallProgressText
       .textContent =
-      `${progress}% complete`;
+      progressLabel(progress);
   }
 
 
@@ -1060,7 +1039,7 @@ function createProjectCard(
     );
 
   progressFill.style.width =
-    `${progress}%`;
+    `${progress ?? 0}%`;
 
   progressWrap.append(
     progressFill
@@ -1082,7 +1061,7 @@ function createProjectCard(
     );
 
   progressText.textContent =
-    `${progress}% complete`;
+    progressLabel(progress);
 
 
   const status =
@@ -1091,7 +1070,9 @@ function createProjectCard(
     );
 
   status.textContent =
-    progress >= 100
+    progress === null
+      ? "Unavailable"
+      : progress >= 100
       ? "Complete"
       : "Active";
 
@@ -1199,6 +1180,10 @@ function wireDashboardProjectCards() {
     )
     .forEach(
       card => {
+
+        const projectHeading = card.querySelector("h3");
+        const progressEntry = projectHeading && getProjectEntryByName(projectHeading.textContent);
+        if (progressEntry) paintProgress(card, displayProgress(progressEntry.project));
 
         if (
           card.dataset
