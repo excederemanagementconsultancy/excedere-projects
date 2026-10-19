@@ -1,3 +1,12 @@
+/* Do not display another account's browser workspace while cloud hydration is pending. */
+(()=>{
+ 'use strict';
+ const app=document.getElementById('authenticatedApp');if(!app)return;
+ const protect=()=>{if(!window.ExcedereProjectsCloudReady?.()){if(!app.hidden)app.hidden=true;if(!app.inert)app.inert=true;}};
+ const observer=new MutationObserver(protect);observer.observe(app,{attributes:true,attributeFilter:['hidden','inert']});protect();
+ window.addEventListener('excedere:projects-ready',()=>{if(window.ExcedereProjectsCloudReady?.()&&document.getElementById('signinScreen')?.hidden){app.hidden=false;app.inert=false;}});
+})();
+
 /* Atomic, account scoped Projects operations with durable server receipts. */
 (()=>{
   'use strict';

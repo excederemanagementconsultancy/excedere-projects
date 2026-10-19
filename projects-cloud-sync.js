@@ -1,6 +1,7 @@
 /* Durable operation queue. Server receipts are authoritative; recovery copies survive reloads. */
 (()=>{
  'use strict';
+ const scriptBase=new URL('.',document.currentScript.src);
  const auth=window.ExcedereAuth,Repository=window.ProjectsCloudRepository,workspace=window.ExcedereProjectsWorkspace,protocol=globalThis.ProjectsSyncProtocol;
  if(!auth||!Repository||!workspace||!protocol)return;
  const PREFIX='excedereProjectsOperationV2:',ARCHIVE='excedereProjectsHistoryV2:',LEGACY='excedereProjectsPendingV1:',BASE='excedereProjectsBaseV2:',WORKING_OWNER='excedereProjectsWorkingOwnerV2',IMPORTED='excedereProjectsLegacyImportedV2:';
@@ -14,6 +15,8 @@
  function capture(){if(!ready||!view)return;const current=workspace.snapshot();const changes=protocol.diff(view,current);if(changes.length){persist(changes);view=current;}storageFailed=false;}
  function schedule(delay=300){clearTimeout(timer);timer=setTimeout(flush,delay);}
  function notify(message,error=false){
+  let blocked=document.getElementById('project-sync-blocked');
+  if(error&&!ready){if(!blocked){blocked=document.createElement('div');blocked.id='project-sync-blocked';blocked.setAttribute('role','status');document.body.append(blocked);}blocked.replaceChildren();const detail=document.createElement('p');detail.textContent=message;const retry=document.createElement('button');retry.textContent='Retry loading my workspace';retry.onclick=()=>initialise();blocked.append(detail,retry);}else blocked?.remove();
   const notice=document.querySelector('.save-notice');if(notice){notice.textContent=message;notice.classList.toggle('error',error);}
   let status=document.getElementById('projects-sync-status');if(!status){status=document.createElement('div');status.id='projects-sync-status';status.setAttribute('role','status');app?.querySelector('.sidebar')?.append(status);}
   status.replaceChildren();const text=document.createElement('p');text.textContent=message;status.append(text);
@@ -21,8 +24,8 @@
   const conflicts=owner?queued().filter(op=>op.conflicts?.length):[];
   if(conflicts.length){const review=document.createElement('button');review.type='button';review.textContent='Review conflicting changes';review.onclick=reviewConflicts;status.append(review);}
  }
- function apply(remote){
-  if(activeEditor())return;
+ function apply(remote,initialHydration=false){
+  if(!initialHydration&&activeEditor())return;
   let next=remote;for(const op of queued())next=protocol.overlay(next,op.changes);
   if(!protocol.equal({...next,savedAt:null},{...workspace.snapshot(),savedAt:null}))workspace.apply(next);
   view=workspace.snapshot();localStorage.setItem(BASE+owner,JSON.stringify(view));localStorage.setItem(WORKING_OWNER,owner);
@@ -53,7 +56,12 @@
    owner=session.user.id;repo=new Repository(auth.client,owner);
    const savedBase=localStorage.getItem(BASE+owner);
    if(savedBase&&localStorage.getItem(WORKING_OWNER)===owner){const previous=workspace.validate(JSON.parse(savedBase));const current=workspace.snapshot();persist(protocol.diff(previous,current));}
-   const remote=await repo.load();if(token!==generation)return false;if(!remote)throw Error('No Projects cloud workspace exists for this account.');
+   let remote=await repo.load();if(token!==generation)return false;
+   if(!remote){
+    // A new account starts empty. Never import another account's browser workspace.
+    const empty={schemaVersion:1,records:{tasks:[],captures:[],milestones:[],notes:[]},projects:[],projectStatus:{},preferences:{seedTasksV1:'1',commercialProjectsSeedV1:'1'}};
+    await repo.save(empty);remote=await repo.load();if(token!==generation)return false;
+   }
    const raw=localStorage.getItem(LEGACY+owner);
    if(raw){const legacy=JSON.parse(raw);if(legacy.userId!==owner)throw Error('Recovery account mismatch.');workspace.validate(legacy.payload);
     const receipt=await repo.receipt(legacy.revision);
@@ -66,9 +74,10 @@
      localStorage.setItem(ARCHIVE+owner+':legacy:'+legacy.revision,raw);localStorage.setItem(IMPORTED+owner+':'+legacy.revision,'Protected in durable operation queue');
     }
    }
-   ready=true;if(app)app.inert=false;apply(remote);window.ExcedereProjectsOpenLinkedTask?.();schedule(0);return true;
+   apply(remote,true);ready=true;if(app)app.inert=false;window.dispatchEvent(new CustomEvent('excedere:projects-ready'));window.ExcedereProjectsOpenLinkedTask?.();schedule(0);return true;
   })();
-  try{return await initialising;}catch(e){initialising=null;notify('Sync could not start. Recovery copies are retained. '+e.message,true);return false;}
+  const pending=initialising;
+  try{const result=await pending;if(!result&&initialising===pending)initialising=null;return result;}catch(e){if(initialising===pending){initialising=null;notify('Sync could not start. Recovery copies are retained. '+e.message,true);}return false;}
  }
  async function flush(){
   if(busy)return;if(!ready){await initialise();return;}busy=true;const token=generation;
@@ -102,4 +111,6 @@
  window.addEventListener('beforeunload',event=>{if(storageFailed||(owner&&queued().length)){event.preventDefault();event.returnValue='';}});
  auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'||(owner&&session?.user?.id&&session.user.id!==owner)){generation++;clearTimeout(timer);ready=false;busy=false;owner=repo=view=initialising=null;if(app)app.inert=true;}if(event==='SIGNED_IN'&&!ready)setTimeout(()=>initialise(),0);});
  initialise();
+ // Ordered additive modules keep the existing HTML and application scripts unchanged.
+ (async()=>{for(const name of ['project-access-client.js','project-sharing.js'])await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name,scriptBase).href;script.onload=resolve;script.onerror=()=>reject(Error('Project collaboration could not load. Reload to retry.'));document.head.append(script);});})().catch(e=>notify(e.message,true));
 })();
