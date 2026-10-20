@@ -26,14 +26,34 @@ window.ExcedereStore = (() => {
     localStorage.setItem(key, JSON.stringify(items));
   }
   function change(key, id, update) {
-    const items = read(key), index = items.findIndex(x => x.id === id);
+    const items = read(key);
+    let index = items.findIndex(x => x.id === id);
+    const part = globalThis.ExcedereRecurrence?.split(id);
+    if (index < 0 && part) {
+      index = items.findIndex(x => x.id === part.id && x.recurrence);
+      if (index >= 0) {
+        items[index] = globalThis.ExcedereRecurrence.updateOccurrence(items[index],part.date,update);
+        write(key,items);
+        return;
+      }
+    }
     if (index < 0) throw Error('Item changed in another tab. Please try again.');
-    items[index] = { ...items[index], ...update, updatedAt: new Date().toISOString() };
+    const engine = globalThis.ExcedereRecurrence;
+    const before = items[index];
+    let after = { ...before, ...update, updatedAt: new Date().toISOString() };
+    if (update.recurrence) after = {...engine.configure(before,update.recurrence),...update,updatedAt:after.updatedAt};
+    items[index] = after;
     write(key, items);
   }
   function add(key, item) {
     const items = read(key);
-    items.push({ ...item, id: uid(), status: 'active', createdAt: new Date().toISOString() });
+    let record = { ...item, id: uid(), status: 'active', createdAt: new Date().toISOString() };
+    if (record.recurrence) {
+      const rule = record.recurrence;
+      delete record.recurrence;
+      record = globalThis.ExcedereRecurrence.configure(record,rule,undefined,undefined,false);
+    }
+    items.push(record);
     write(key, items);
   }
   return { keys, read, write, change, add };
