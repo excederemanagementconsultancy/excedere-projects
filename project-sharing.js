@@ -27,7 +27,11 @@
    const pending=(await api.pending()).filter(op=>op.owner===p.ownerId&&op.project===p.projectId);if(token!==generation)return;
    for(const op of pending){body.append(el('p',op.blocked?'A saved draft needs review: '+op.reason:'A saved change is waiting for confirmation.'));
     if(!op.blocked)body.append(button('Retry saved change',async()=>{try{await api.send(op);if(token===generation)show(project,body);}catch(e){status.textContent=e.message;}}));
-    else if(op.reason&&!/access/i.test(op.reason))for(const c of op.changes)body.append(button('Review draft: '+c.after.title,()=>editor(p,c.collection,c.before,people,body,project,c.after,op)));
+    else if(op.reason&&!/access/i.test(op.reason))for(const c of op.changes)body.append(button('Review draft: '+c.after.title,()=>{
+     const fields=Object.keys(c.after).filter(field=>field.startsWith('occurrence:')&&JSON.stringify(c.after[field])!==JSON.stringify(c.before?.[field]));
+     const date=fields.length===1&&JSON.stringify(c.after.recurrence)===JSON.stringify(c.before?.recurrence)?fields[0].slice('occurrence:'.length):undefined;
+     editor(p,c.collection,c.before,people,body,project,c.after,op,date);
+    }));
    }
    if(project.owned){const share=el('form');const email=field(share,'Team member email','','email');email.required=true;
     share.append(button('Share project',()=>membership(true)),button('Remove access',()=>membership(false)));
@@ -36,22 +40,37 @@
    }
    for(const [collection,label] of [['tasks','Task'],['captures','Idea'],['milestones','Milestone'],['notes','Note']]){
     body.append(el('h4',label+' records'),button('Add '+label,()=>editor(p,collection,null,people,body,project)));
-    for(const record of p.records[collection]||[])if(!record.deletedAt)body.append(button(record.title+(record.status==='completed'?' (completed)':''),()=>editor(p,collection,record,people,body,project)));
+    for(const record of p.records[collection]||[])if(!record.deletedAt){
+     const rows=window.ExcedereRecurrence.view(record,window.ExcedereRecurrence.addDays(window.ExcedereRecurrence.today(),31));
+     for(const row of rows)if(!row.deletedAt)body.append(button(row.title+(row.occurrenceDate?' · '+row.dueDate:'')+(row.status==='completed'?' (completed)':''),()=>editor(p,collection,record,people,body,project,null,null,row.occurrenceDate)));
+     if(record.recurrence)body.append(button('Edit repeat schedule: '+record.title,()=>editor(p,collection,record,people,body,project)));
+    }
    }
   }catch(e){if(token===generation)body.replaceChildren(button('All projects',catalog),el('p',e.message));}
  }
- function editor(p,collection,before,people,body,project,draft,draftOperation){
-  const token=++generation,form=el('form'),record=draft||before||{};body.replaceChildren(el('h3',before?'Edit record':'Create record'));
+ function editor(p,collection,before,people,body,project,draft,draftOperation,occurrenceDate){
+  const token=++generation,form=el('form'),record=(occurrenceDate?window.ExcedereRecurrence.occurrence(draft||before,occurrenceDate):draft||before)||{};body.replaceChildren(el('h3',before?'Edit record':'Create record'));
   const title=field(form,'Title',record.title);title.required=true;
   const notes=field(form,'Notes',record.notes,'textarea');const due=field(form,'Due date',record.dueDate,'date');
   const label=el('label','Assigned to'),assigned=el('select');assigned.append(new Option('Unassigned',''));for(const person of people)assigned.append(new Option(person.name,person.userId));assigned.value=record.assignedTo||'';label.append(assigned);form.append(label);
   const completed=field(form,'Completed','','checkbox');completed.checked=record.status==='completed';
+  const isTask=(before?.type||({tasks:'Task',captures:'Idea'}[collection]))==='Task';
+  const repeatRule=isTask&&!occurrenceDate?window.ExcedereRecurrenceForm.attach(form,record):null;
+  if(before?.recurrence&&!occurrenceDate){due.disabled=true;completed.disabled=true;}
+  if(occurrenceDate){assigned.disabled=true;form.append(el('p','You are editing this occurrence only. Other dates keep their own schedule and status.'));}
   const status=el('p');status.setAttribute('role','status');
   const save=el('button','Save record');save.type='submit';form.append(save,button('Back',()=>show(project,body)),status);body.append(form);
   form.onsubmit=async event=>{event.preventDefault();save.disabled=true;
-   try{const id=record.id||crypto.randomUUID();let after={...record,id,type:before?.type||({tasks:'Task',captures:'Idea',milestones:'Milestone',notes:'Note'}[collection]),title:title.value.trim(),notes:notes.value,dueDate:due.value,project:project.name,projectId:project.projectId,assignedTo:assigned.value||null,status:completed.checked?'completed':'active'};
+   try{const id=before?.id||record.id||crypto.randomUUID();let after={...record,id,type:before?.type||({tasks:'Task',captures:'Idea',milestones:'Milestone',notes:'Note'}[collection]),title:title.value.trim(),notes:notes.value,dueDate:due.value,project:project.name,projectId:project.projectId,assignedTo:assigned.value||null,status:completed.checked?'completed':'active'};
     // Explicitly reviewed drafts use the latest baseline; the retained original remains available.
     let baseline=before,current=p;if(draft){current=await api.read(p.ownerId,p.projectId);baseline=current.records[collection].find(r=>r.id===id)||null;after={...(baseline||after),id,type:after.type,title:after.title,notes:after.notes,dueDate:after.dueDate,project:project.name,projectId:project.projectId,assignedTo:after.assignedTo,status:after.status};}
+    if(occurrenceDate){
+     after=window.ExcedereRecurrence.updateOccurrence(baseline,occurrenceDate,{title:title.value.trim(),notes:notes.value,dueDate:due.value,status:completed.checked?'completed':'active'},'Projects',await api.identity());
+    }else{
+     const rule=repeatRule?.();
+     if(rule){const configured=window.ExcedereRecurrence.configure(baseline||{...after,recurrence:undefined},rule,undefined,undefined,!!baseline);after={...configured,...after,recurrence:configured.recurrence,recurrenceHistory:configured.recurrenceHistory};for(const field of Object.keys(configured))if(field.startsWith('occurrence:'))after[field]=configured[field];}
+    }
+    after.projectId=project.projectId;
     await api.commit(current,[{collection,id,before:baseline,after}]);if(draftOperation){draftOperation.resolved=true;localStorage.setItem(api.key(draftOperation),JSON.stringify(draftOperation));}if(token===generation)show(project,body);
    }catch(e){if(token===generation){status.textContent=e.message;save.disabled=false;}}
   };

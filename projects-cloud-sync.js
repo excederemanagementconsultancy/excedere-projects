@@ -39,7 +39,7 @@
    const latest=issue.collection==='projects'?remote.projects?.find(r=>r.id===issue.id):['preferences','projectStatus'].includes(issue.collection)?{value:remote[issue.collection]?.[issue.id]}:remote.records[issue.collection]?.find(r=>r.id===issue.id);
    detail.textContent=JSON.stringify({account:latest,browser:issue.after},null,2);detail.style.whiteSpace='pre-wrap';section.append(title,detail);
    for(const [label,useLocal] of [['Keep account version',false],['Use browser version',true]]){const button=document.createElement('button');button.type='button';button.textContent=label;button.onclick=()=>{
-    try{if(useLocal){const chosen=protocol.operation(owner,[{collection:issue.collection,id:issue.id,before:latest||null,after:issue.after}]);localStorage.setItem(key(chosen.id),JSON.stringify(chosen));}
+    try{if(useLocal){const chosen=protocol.operation(owner,[{collection:issue.collection,id:issue.id,before:latest||null,after:window.ExcedereRecurrence.resolveConflict(latest,issue.before,issue.after,owner)}]);localStorage.setItem(key(chosen.id),JSON.stringify(chosen));}
      const remaining=op.changes.filter(c=>!(c.collection===issue.collection&&c.id===issue.id));
      localStorage.setItem(ARCHIVE+owner+':'+op.id+':'+issue.collection+':'+issue.id,JSON.stringify({issue,choice:label,chosenAt:new Date().toISOString()}));
      op.changes=remaining;op.conflicts=op.conflicts.filter(c=>!(c.collection===issue.collection&&c.id===issue.id));
@@ -112,5 +112,5 @@
  auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'||(owner&&session?.user?.id&&session.user.id!==owner)){generation++;clearTimeout(timer);ready=false;busy=false;owner=repo=view=initialising=null;if(app)app.inert=true;}if(event==='SIGNED_IN'&&!ready)setTimeout(()=>initialise(),0);});
  initialise();
  // Ordered additive modules keep the existing HTML and application scripts unchanged.
- (async()=>{for(const name of ['project-access-client.js','project-sharing.js'])await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name,scriptBase).href;script.onload=resolve;script.onerror=()=>reject(Error('Project collaboration could not load. Reload to retry.'));document.head.append(script);});})().catch(e=>notify(e.message,true));
+ (async()=>{for(const name of ['project-access-client.js','project-sharing.js'])await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name+'?v=recurrence-v1',scriptBase).href;script.onload=resolve;script.onerror=()=>reject(Error('Project collaboration could not load. Reload to retry.'));document.head.append(script);});})().catch(e=>notify(e.message,true));
 })();
