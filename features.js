@@ -156,7 +156,10 @@
     return true;
   }
 
-  const localDate = (d = new Date()) => window.ExcedereRecurrence.today('America/New_York',d);
+  const localDate = (d = new Date()) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
+      d.getDate()
+    ).padStart(2, '0')}`;
 
   const dateLabel = value =>
     value
@@ -414,7 +417,7 @@
   }
 
   function linkedProjectRecords(projectName) {
-    return store.keys.flatMap(key => store.read(key)).filter(
+    return readAll().filter(
       item =>
         !item.deletedAt &&
         normaliseProjectName(item.project) ===
@@ -818,7 +821,6 @@
       if (name === 'dueDate') {
         input.type = 'date';
       }
-      if (name === 'reminderTime') input.type = 'time';
 
       if (name === 'title') {
         input.required = true;
@@ -863,19 +865,6 @@
       );
     }
 
-    const repeatRule = type === 'Task' && !item?.occurrenceDate
-      ? window.ExcedereRecurrenceForm.attach(form,item || {}) : null;
-    if (item?.occurrenceDate) {
-      form.append(el('p', 'You are editing this occurrence only. Other dates keep their own schedule and status.', 'form-note'));
-      field('Reminder time in FLOW, optional','reminderTime',item.reminderTime);
-      const projectField = form.elements.namedItem('project');
-      if (projectField) projectField.disabled = true;
-    }
-    if (item?.recurrence && !item?.occurrenceDate) {
-      const due = form.elements.namedItem('dueDate');
-      if (due) due.disabled = true;
-    }
-
     field(
       type === 'Note' ? 'Note' : 'Notes (optional)',
       'notes',
@@ -914,12 +903,11 @@
         project: data.project || project
       };
 
-      const success = mutate(() => {
-        const rule = repeatRule?.();
-        if (rule) record.recurrence = rule;
-        if (item) store.change(key, item.id, record);
-        else store.add(key, record);
-      });
+      const success = mutate(() =>
+        item
+          ? store.change(key, item.id, record)
+          : store.add(key, record)
+      );
 
       if (success) {
         dialog.close();
@@ -1114,11 +1102,7 @@
   function readAll() {
     return store.keys.flatMap(key => {
       try {
-        const engine = window.ExcedereRecurrence;
-        const today = engine.today();
-        const monthEnd = monthInput?.value ? engine.addDays(monthInput.value + '-01',32).slice(0,7) + '-01' : today;
-        const until = [engine.addDays(today,31),monthEnd].sort().at(-1);
-        return store.read(key).flatMap(item => engine.view(item,until)).map(item => ({
+        return store.read(key).map(item => ({
           ...item,
           key
         }));
@@ -1185,7 +1169,6 @@
       );
     }
 
-    if (item.occurrenceDate) card.append(el('p',`Repeating task occurrence: ${dateLabel(item.occurrenceDate)}`, 'subtitle'));
     if (compact) return card;
 
     const actions = el(
@@ -1198,7 +1181,7 @@
       actions.append(
         button('Restore', () =>
           mutate(() =>
-            store.change(item.key, item.seriesDeletedAt ? item.seriesId : item.id, {
+            store.change(item.key, item.id, {
               deletedAt: null
             })
           )
@@ -1216,19 +1199,6 @@
         )
       );
 
-      if (item.occurrenceDate) {
-        actions.append(button('Edit repeat schedule', () => {
-          const series = store.read(item.key).find(r => r.id === item.seriesId);
-          if (series) editItem(item.key,series,'Task',series.project);
-        }));
-        actions.append(button('Occurrence history', () => {
-          dialog.replaceChildren(el('h2','Occurrence history'));
-          dialog.append(el('p',`${item.title}: ${dateLabel(item.occurrenceDate)}`));
-          for (const event of item.audit || []) dialog.append(el('p',`${event.event} · ${event.at} · ${event.source}`));
-          if (!item.audit?.length) dialog.append(el('p','No changes recorded for this occurrence.'));
-          dialog.append(button('Close', () => dialog.close())); dialog.showModal();
-        }));
-      }
       if (
         ['Task', 'Milestone'].includes(
           item.type
@@ -1907,7 +1877,11 @@
     );
 
     const today = localDate();
-    const nextDate = window.ExcedereRecurrence.addDays(today,7);
+    const next = new Date();
+
+    next.setDate(
+      next.getDate() + 7
+    );
 
     const counts = [
       tasks.filter(
@@ -1925,7 +1899,7 @@
         item =>
           item.dueDate > today &&
           item.dueDate <=
-            nextDate
+            localDate(next)
       ).length,
 
       ideas.length
@@ -2296,14 +2270,7 @@
       report('This task link is invalid.', true);
       return;
     }
-    let item = readAll().find(record => (record.id === id || record.seriesId === id) && record.type === 'Task' && !record.deletedAt);
-    if (!item) {
-      const part = window.ExcedereRecurrence.split(id);
-      if (part) for (const key of [tasksKey,capturesKey]) {
-        const series = store.read(key).find(r => r.id === part.id && r.recurrence && !r.deletedAt);
-        if (series) try { item = {...window.ExcedereRecurrence.occurrence(series,part.date),key}; } catch {}
-      }
-    }
+    const item = readAll().find(record => record.id === id && record.type === 'Task' && !record.deletedAt);
     handledTaskLink = location.hash;
     if (!item) {
       report('This task is unavailable in your current account. It may have been deleted.', true);
